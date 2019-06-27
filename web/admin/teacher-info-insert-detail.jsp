@@ -12,13 +12,12 @@
 <body>
 <!-- 查询条件 -->
 <div style="margin: 15px; border: 1px dotted #ccc; border-radius: 8px">
-    <form id="myForm" class="layui-form" action="" style="margin: 27px">
+    <form id="myForm" class="layui-form" action="" style="margin: 27px" lay-filer="myForm">
         <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">教师编号</label>
                 <div class="layui-input-block">
-                    <input type="text" id="id" name="id" lay-verify="required|number" placeholder="密码默认为教师编号" autocomplete="off"
-                           class="layui-input">
+                    <input type="text" id="id" name="id" lay-verify="required|number" placeholder="密码默认为教师编号" autocomplete="off" class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
@@ -74,34 +73,41 @@
             , $ = layui.jquery
             , element = layui.element
             , form = layui.form;
+
         //监听提交
         form.on('submit(addForm)', function (message) {
             //注意：parent 是 JS 自带的全局对象，可用于操作父页面
             var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
             $.ajax({
-                url:'<%=request.getContextPath()%>/TeacherServlet?action=insertTeacher',
-                type:'POST',
-                data:{
-                    id:message.field.id
-                    ,name:message.field.name
-                    ,sex:message.field.sex
-                    ,age:message.field.age
-                    ,identity:message.field.identity
+                url: '<%=request.getContextPath()%>/TeacherServlet?action=insertTeacher',
+                type: 'POST',
+                data: {
+                    id: message.field.id
+                    , name: message.field.name
+                    , sex: message.field.sex
+                    , age: message.field.age
+                    , identity: message.field.identity
                 },
-                dataType:'json',
+                dataType: 'json',
                 async: false,
-                success:function (msg) {
-                    if(msg == "true"){
+                success: function (msg) {
+                    if (msg == "true") {
                         layer.msg("添加成功", {icon: 6});
-                        setTimeout(function(){
+                        setTimeout(function () {
                             parent.layer.close(index);//关闭所有的弹出层
                         }, 1000);
-                    }else{
+                    } else {
                         layer.msg("添加失败", {icon: 5});
                     }
                 }
             });
             return false;
+        });
+
+        $(function () {
+            form.val("myForm", {
+                "id": "123"
+            });
         });
     });
 

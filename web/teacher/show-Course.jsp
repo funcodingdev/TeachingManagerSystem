@@ -16,12 +16,12 @@
     <script src="<%=request.getContextPath()%>/layui/layui.js"></script>
 </head>
 <body>
-<form class="layui-form" action="">
+<form class="layui-form" action="" lay-filer="myForm">
     <div class="layui-form-item">
         <div class="layui-inline">
-            <label class="layui-form-label">课程编号</label>
+            <label class="layui-form-label">课程名</label>
             <div class="layui-input-block">
-                <input type="text" id="id" lay-verify="required" placeholder="请输入课程编号" autocomplete="off"
+                <input type="text" id="name" name="name" lay-verify="required" placeholder="请输入课程名" autocomplete="off"
                        class="layui-input">
             </div>
         </div>
@@ -54,10 +54,17 @@
             , url: '<%=request.getContextPath()%>/TeachingTaskServlet?action=getTeaTeachingTasks' //数据接口
             , cellMinWidth: 80 //全局定义常规单元格的最小宽度
             , title: '教学计划表'
-            , page: true //开启分页
+            , page: { //
+                layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                ,curr: 1 //设定初始在第 1 页
+                ,groups: 1 //只显示 1 个连续页码
+                ,first: false //不显示首页
+                ,last: false //不显示尾页
+            }
             , limit: 15
             , limits: [15, 30, 45, 60]
             , even:true
+            ,autoSort: false
             , curr: 1 //设定初始在第 1 页
             // , toolbar: 'default' //开启工具栏，此处显示默认图标
             , cols: [[ //表头
@@ -98,9 +105,9 @@
         // 单击搜索
         $("#searchId").click(function () {
             // 注意参数(myTable为表格id)
-            var courseId = $("#id").val();
+            var courseName = $("#name").val();
             table.reload('myTable', {
-                url: '<%=request.getContextPath()%>/CourseServlet?action=getTeaCourses&keyWord=' + courseId
+                url: '<%=request.getContextPath()%>/TeachingTaskServlet?action=getTeaTeachingTasks&keyWord=' + courseName
             });
         });
 
@@ -108,7 +115,7 @@
         function flushTab() {
             // $(".layui-laypage-btn")[0].click();
             table.reload('myTable', {
-                url: '<%=request.getContextPath()%>/CourseServlet?action=getTeaCourses'
+                url: '<%=request.getContextPath()%>/TeachingTaskServlet?action=getTeaTeachingTasks'
             });
         }
 

@@ -53,7 +53,7 @@ public class TeacherDaoImpl implements ITeacherDao {
 
     @Override
     public int updateTeacher(Teacher tea) {
-        String sql = "update teacher set name = ?,sex = ?,age = ?,identity = ?,password = ?,image = ?) where id = ?";
+        String sql = "update teacher set name = ?,sex = ?,age = ?,identity = ?,password = ?,image = ? where id = ?";
         return CRUDTemplate.executeUpdate(sql, tea.getName(), tea.getSex(),
                 tea.getAge(), tea.getIdentity(), tea.getPassword(), tea.getImage(), tea.getId());
     }

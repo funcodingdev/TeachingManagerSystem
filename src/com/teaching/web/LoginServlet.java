@@ -79,6 +79,7 @@ public class LoginServlet extends BaseServlet {
                 request.setAttribute("id", username);
                 request.getRequestDispatcher("/login.jsp").forward(request,response);
             } else {//验证成功
+                System.out.println(loginObj.toString());
                 session.setAttribute("obj", loginObj);
                 response.sendRedirect(invoke);
             }

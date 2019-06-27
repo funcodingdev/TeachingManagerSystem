@@ -13,7 +13,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title></title>
     <link rel="stylesheet" href="<%=request.getContextPath()%>/layui/css/layui.css" media="all">
-    <script src="<%=request.getContextPath()%>/layui/layui.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/layui/layui.js"></script>
 </head>
 <body>
 <form class="layui-form" action="">
@@ -58,11 +58,17 @@
             , url: '<%=request.getContextPath()%>/StudentServlet?action=getStudents' //数据接口
             , cellMinWidth: 80 //全局定义常规单元格的最小宽度
             , title: '学生表'
-            , page: true //开启分页
+            , page: { //
+                layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                ,curr: 1 //设定初始在第 1 页
+                ,groups: 1 //只显示 1 个连续页码
+                ,first: false //不显示首页
+                ,last: false //不显示尾页
+            }
             , limit: 15
             , limits: [15, 30, 45, 60]
-            , even:true
-            , curr: 1 //设定初始在第 1 页
+            , even: true
+            , autoSort: false
             // , toolbar: 'default' //开启工具栏，此处显示默认图标
             , cols: [[ //表头
                 {type: 'checkbox', fixed: 'left'}
@@ -72,7 +78,11 @@
                 , {field: 'age', title: '年龄', sort: true}
                 , {field: 'department', title: '学院'}
                 , {field: 'sclass', title: '班级'}
-                , {field: 'phone', title: '手机号'}
+                , {
+                    field: 'phone',
+                    title: '手机号'
+                }//<div><img style="height:100px;width:100px;" src="<%=request.getContextPath()%>/res/image/headPhoto/{{d.image}}"></div>
+                , {field: 'image', title: '头像', width: 150, align: 'center', templet: '#imgtmp'}
                 , {fixed: 'right', align: 'center', toolbar: '#stuBar'}
             ]]
         });
@@ -154,6 +164,9 @@
         }
 
     });
+</script>
+<script type="text/html" id="imgtmp">
+    <img src="{{d.image}}"/>
 </script>
 </body>
 </html>

@@ -18,14 +18,14 @@
                 <label class="layui-form-label">课程编号</label>
                 <div class="layui-input-block">
                     <input type="text" id="id" name="id" lay-verify="required|number" placeholder="请输入课程编号" autocomplete="off" readonly
-                           class="layui-input">
+                           class="layui-input layui-disabled">
                 </div>
             </div>
             <div class="layui-inline">
                 <label class="layui-form-label">课程名</label>
                 <div class="layui-input-block">
-                    <input type="text" id="name" name="name" lay-verify="required" placeholder="请输入课程名" autocomplete="off"
-                           class="layui-input">
+                    <input type="text" id="name" name="name" lay-verify="required" placeholder="请输入课程名" autocomplete="off" readonly
+                           class="layui-input layui-disabled">
                 </div>
             </div>
         </div>

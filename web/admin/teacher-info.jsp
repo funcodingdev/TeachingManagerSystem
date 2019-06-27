@@ -36,7 +36,7 @@
 
 <table class="layui-hide" id="teaTable" lay-filter="tea"></table>
 <script type="text/html" id="teaBar">
-    <%--<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>--%>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
@@ -58,10 +58,17 @@
             , url: '<%=request.getContextPath()%>/TeacherServlet?action=getTeachers' //数据接口
             , cellMinWidth: 80 //全局定义常规单元格的最小宽度
             , title: '教师表'
-            , page: true //开启分页
+            , page: { //
+                layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                ,curr: 1 //设定初始在第 1 页
+                ,groups: 1 //只显示 1 个连续页码
+                ,first: false //不显示首页
+                ,last: false //不显示尾页
+            }
             , limit:15
             , limits: [15, 30, 45,60]
             , even:true
+            ,autoSort: false
             , curr: 1 //设定初始在第 1 页
             // , toolbar: 'default' //开启工具栏，此处显示默认图标
             , cols: [[ //表头
@@ -105,11 +112,11 @@
                     type: 2,
                     skin: 'layui-layer-lan',
                     closeBtn: 2,
-                    area: ["740px", "460px"], // 宽高
-                    content: '../admin/teacherInfo.jsp',
-                    // end: function () {
-                    //     flushTab();
-                    // },
+                    area: ["740px", "400px"], // 宽高
+                    content: '../admin/teacher-info-update-detail.jsp',
+                    end: function () {
+                        flushTab();
+                    },
                     success: function (layero, index) {
                         layer.msg(layero, index);
                     }
@@ -135,7 +142,7 @@
                 // skin: 'layui-layer-rim', // 加上边框
                 area: ["740px", "360px"], // 宽高
                 // maxmin: true, //开启最大化最小化按钮
-                content: '../admin/teacher-info-detail.jsp',
+                content: '../admin/teacher-info-insert-detail.jsp',
                 end: function () {
                     flushTab();
                 }

@@ -11,6 +11,6 @@ public class StudentDaoImplTest {
 
     @Test
     public void getAllStudent() {
-        System.out.println(DaoFactory.getTeachingTaskDao().getTeaTeachingTasks("200000913","",1,20));
+        System.out.println(DaoFactory.getStudentDao().getSCGrade("201962502"));
     }
 }

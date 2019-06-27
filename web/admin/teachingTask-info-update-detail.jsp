@@ -18,14 +18,14 @@
             <label class="layui-form-label">教学任务号</label>
             <div class="layui-input-block">
                 <input type="text" id="teachingTaskNum" name="teachingTaskNum" lay-verify="required|number" placeholder="请输入教学任务号" autocomplete="off"
-                       readonly class="layui-input">
+                       readonly class="layui-input layui-disabled">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">课程名</label>
             <div class="layui-input-block">
                 <input type="text" id="courseName" name="courseName" lay-verify="required" placeholder="请输入课程名" autocomplete="off"
-                       readonly class="layui-input">
+                       readonly class="layui-input layui-disabled">
             </div>
         </div>
         <div class="layui-form-item">
@@ -109,7 +109,7 @@
                 }
             });
             var parent_json = eval('('+parent.json+')');
-            console.log(parent_json);
+            // console.log(parent_json);
             form.val("myForm", {
                 "teachingTaskNum": parent_json.teachingTaskNum,
                 "courseName":parent_json.courseName,

@@ -17,7 +17,8 @@
         <div class="layui-form-item">
             <label class="layui-form-label">教学任务号</label>
             <div class="layui-input-block">
-                <input type="text" id="teachingTaskNum" name="teachingTaskNum" lay-verify="required|number" placeholder="请输入教学任务号" autocomplete="off"
+                <input type="text" id="teachingTaskNum" name="teachingTaskNum" lay-verify="required|number"
+                       placeholder="请输入教学任务号" autocomplete="off"
                        class="layui-input">
             </div>
         </div>
@@ -90,6 +91,11 @@
             return false;
         });
         $(function () {
+
+            form.val("myForm", {
+                "teachingTaskNum": Date.parse(new Date())
+            });
+
             $.ajax({
                 url: "<%=request.getContextPath()%>/CourseServlet?action=getAllCourseName",//请求地址
                 type: "POST",//请求方式
@@ -118,8 +124,8 @@
                 success: function (result) {
                     var data = result;
                     var proHtml = '';
-                    for (var i = 0;i<data.length;i++){
-                        proHtml += '<option value="' + data[i]['id'] + '">' + data[i]['name'] +'('+data[i]['id']+')'+ '</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        proHtml += '<option value="' + data[i]['id'] + '">' + data[i]['name'] + '(' + data[i]['id'] + ')' + '</option>';
                     }
                     $("#teacherId").html(proHtml);
                     form.render('select');
@@ -130,6 +136,41 @@
             });
         })
     });
+
+    function curentTime() {
+        var now = new Date();
+
+        var year = now.getFullYear();       //年
+        var month = now.getMonth() + 1;     //月
+        var day = now.getDate();            //日
+
+        var hh = now.getHours();            //时
+        var mm = now.getMinutes();          //分
+        var ss = now.getSeconds();           //秒
+
+        var clock = year + "";
+
+        if (month < 10)
+            clock += "0";
+
+        clock += month + "";
+
+        if (day < 10)
+            clock += "0";
+
+        clock += day + "";
+
+        if (hh < 10)
+            clock += "0";
+
+        clock += hh + "";
+        if (mm < 10) clock += '0';
+        clock += mm + "";
+
+        if (ss < 10) clock += '0';
+        clock += ss;
+        return (clock);
+    }
 </script>
 </body>
 </html>

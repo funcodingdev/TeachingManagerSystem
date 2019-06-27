@@ -50,13 +50,13 @@
         </div>
         <div class="layui-form-item">
             <div class="layui-input-block login-btn">
-                <button class="layui-btn layui-btn-lg" lay-submit  lay-filter="loginForm" id="loginBtn">登陆</button>
+                <button class="layui-btn layui-btn-lg" lay-submit lay-filter="loginForm" id="loginBtn">登陆</button>
             </div>
         </div>
     </form>
 </div>
 <script>
-    layui.use(['form','element','layer'], function () {
+    layui.use(['form', 'element', 'layer'], function () {
         var form = layui.form
             , element = layui.element//元素操作
             , layer = layui.layer

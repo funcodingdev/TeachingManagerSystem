@@ -153,10 +153,6 @@
         });
     });
 
-    <%--$(function () {--%>
-        <%--$("#department option[value=${stu.department}]").prop("selected", true);--%>
-        <%--$("#sClass option[value=${stu.sClass}]").prop("selected", true);--%>
-    <%--});--%>
 </script>
 </body>
 </html>

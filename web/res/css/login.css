@@ -14,3 +14,14 @@
     margin: -10em 0 0 -14em;
     position: absolute;
 }
+.bgCls {
+    width: 100%;
+    height: 100%;
+    background: url(../image/bg/index-bg.jpg) no-repeat 0 0;
+    position: fixed;
+    background-size: 100% 100%;
+    -webkit-filter: blur(15px);
+
+    -ms-filter: blur(15px);
+    filter: blur(0px);
+}

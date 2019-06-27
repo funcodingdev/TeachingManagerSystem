@@ -112,4 +112,27 @@ public class TeacherServlet extends BaseServlet {
         return array.toJSONString();
     }
 
+    /**
+     * 修改教师信息
+     * @param request
+     * @param response
+     * @return
+     * @throws ServletException
+     * @throws IOException
+     */
+    public String updateTeacher(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //获取表单教师信息
+        String id = request.getParameter("id");
+        String name = request.getParameter("name");
+        String sex = request.getParameter("sex");
+        String age = request.getParameter("age");
+        String identity = request.getParameter("identity");
+        String password = request.getParameter("password");
+        Teacher teacher = new Teacher(id,name,sex,Integer.valueOf(age),identity,password);
+        teacherService = ServiceFactory.getTeacherService();
+        JSONArray array = new JSONArray();
+        array.add(teacherService.updateTeacher(teacher));
+        return array.toJSONString();
+    }
+
 }

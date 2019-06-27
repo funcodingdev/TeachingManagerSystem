@@ -2,6 +2,7 @@ package com.teaching.service.impl;
 
 import com.teaching.dao.DaoFactory;
 import com.teaching.dao.IStudentDao;
+import com.teaching.domain.Grade;
 import com.teaching.domain.ResponseModel;
 import com.teaching.domain.Student;
 import com.teaching.service.IStudentService;
@@ -53,9 +54,9 @@ public class StudentServiceImpl implements IStudentService {
     }
 
     @Override
-    public ResponseModel<Student> getSCStudent(String teachingTaskNum) {
+    public ResponseModel<Grade> getSCGrade(String teachingTaskNum) {
         studentDao = DaoFactory.getStudentDao();
-        List<Student> students = studentDao.getSCStudent(teachingTaskNum);
+        List<Grade> students = studentDao.getSCGrade(teachingTaskNum);
         return ResponseModel.buildSuccess(students.size(),students);
     }
 

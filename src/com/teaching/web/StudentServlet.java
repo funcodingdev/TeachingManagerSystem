@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.teaching.domain.Department;
+import com.teaching.domain.Grade;
 import com.teaching.domain.ResponseModel;
 import com.teaching.domain.Student;
 import com.teaching.service.IStudentService;
@@ -78,10 +79,10 @@ public class StudentServlet extends BaseServlet {
      * @throws ServletException
      * @throws IOException
      */
-    public String getSCStudents(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public String getSCGrade(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String teachingTaskNum = request.getParameter("teachingTaskNum");
         studentService = ServiceFactory.getStudentService();
-        ResponseModel<Student> stuModel = studentService.getSCStudent(teachingTaskNum);
+        ResponseModel<Grade> stuModel = studentService.getSCGrade(teachingTaskNum);
         return JSON.toJSONString(stuModel);
     }
 

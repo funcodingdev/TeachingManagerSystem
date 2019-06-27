@@ -29,14 +29,14 @@
             <label class="layui-form-label">课程编号</label>
             <div class="layui-input-block">
                 <input type="text" id="courseId" name="courseId" lay-verify="required" autocomplete="off"
-                      readonly class="layui-input">
+                       readonly class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
             <label class="layui-form-label">课程名</label>
             <div class="layui-input-block">
                 <input type="text" id="courseName" name="courseName" lay-verify="required" autocomplete="off"
-                      readonly class="layui-input">
+                       readonly class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
@@ -62,13 +62,12 @@
             , $ = layui.jquery;
 
         $(function () {
-            var parent_json = eval('('+parent.json+')');
-            console.log(parent_json);
+            var parent_json = eval('(' + parent.json + ')');
             form.val("myForm", {
-                "teachingTaskNum":parent_json.teachingTaskNum,
+                "teachingTaskNum": parent_json.teachingTaskNum,
                 "courseId": parent_json.courseId,
-                "courseName":parent_json.courseName,
-                "location":parent_json.location
+                "courseName": parent_json.courseName,
+                "location": parent_json.location
             })
         });
         var teachingTaskNum = $('#teachingTaskNum').val();
@@ -77,40 +76,56 @@
             elem: '#stuTable'
             , id: 'myTable'
             , height: 'full-100'
-            , url: '<%=request.getContextPath()%>/StudentServlet?action=getSCStudents&teachingTaskNum='+teachingTaskNum //数据接口
+            , url: '<%=request.getContextPath()%>/StudentServlet?action=getSCGrade&teachingTaskNum=' + teachingTaskNum //数据接口
             , cellMinWidth: 80 //全局定义常规单元格的最小宽度
             , title: '学生表'
-            , page: true //开启分页
+            , page: { //
+                layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                ,curr: 1 //设定初始在第 1 页
+                ,groups: 1 //只显示 1 个连续页码
+                ,first: false //不显示首页
+                ,last: false //不显示尾页
+            }
             , limit: 15
             , limits: [15, 30, 45, 60]
-            , even:true
+            , even: true
+            ,autoSort: false
             , curr: 1 //设定初始在第 1 页
             // , toolbar: 'default' //开启工具栏，此处显示默认图标
             , cols: [[ //表头
                 {type: 'checkbox', fixed: 'left'}
-                , {field: 'id', title: 'ID', sort: true, fixed: 'left'}
+                , {field: 'stuId', title: 'ID', sort: true, fixed: 'left'}
                 , {field: 'name', title: '姓名'}
-                , {field: 'sex', title: '性别', sort: true}
-                , {field: 'age', title: '年龄', sort: true}
                 , {field: 'department', title: '学院'}
                 , {field: 'sclass', title: '班级'}
                 , {field: 'grade', title: '成绩', edit: 'text', sort: true}
             ]]
         });
 
-        //监听单元格编辑
-        table.on('edit(stu)', function(obj){
-            var value = obj.value //得到修改后的值
-                ,data = obj.data //得到所在行所有键值
-                ,field = obj.field; //得到字段
-            layer.msg('[ID: '+ data.id +'] ' + field + ' 字段更改为：'+ value);
+        // //监听单元格编辑
+        // table.on('edit(stu)', function (obj) {
+        //     var value = obj.value //得到修改后的值
+        //         , data = obj.data //得到所在行所有键值
+        //         , field = obj.field; //得到字段
+        //     layer.msg('[ID: ' + data.id + '] ' + field + ' 字段更改为：' + value);
+        // });
+
+        //监听行单击事件（单击事件为：rowDouble）
+        table.on('rowDouble(myForm)', function(obj){
+            var data = obj.data;
+            console.log(JSON.stringify(data));
+            layer.alert(JSON.stringify(data), {
+                title: '当前行数据：'
+            });
+
+            //标注选中样式
+            obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
         });
 
         // 刷新表格
         function flushTab() {
-            // $(".layui-laypage-btn")[0].click();
             table.reload('myTable', {
-                url: '<%=request.getContextPath()%>/StudentServlet?action=getSCStudents'
+                url: '<%=request.getContextPath()%>/StudentServlet?action=getSCGrade'
             });
         }
 

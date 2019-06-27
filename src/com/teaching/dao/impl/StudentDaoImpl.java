@@ -1,6 +1,7 @@
 package com.teaching.dao.impl;
 
 import com.teaching.dao.IStudentDao;
+import com.teaching.domain.Grade;
 import com.teaching.domain.Student;
 import com.teaching.jdbc.handler.BeanHandler;
 import com.teaching.jdbc.handler.BeanListHandler;
@@ -39,9 +40,9 @@ public class StudentDaoImpl implements IStudentDao {
     }
 
     @Override
-    public List<Student> getSCStudent(String teachingTaskNum) {
-        String sql = "select Student.*,selectCourse.grade from selectCourse inner join Student on selectCourse.stuId = Student.id where teachingTaskNum = ?";
-        return CRUDTemplate.executeQuery(sql, new BeanListHandler<>(Student.class), teachingTaskNum);
+    public List<Grade> getSCGrade(String teachingTaskNum) {
+        String sql = "select selectCourse.*,Student.name,Student.department,Student.sClass,selectCourse.grade from selectCourse inner join Student on selectCourse.stuId = Student.id where teachingTaskNum = ?";
+        return CRUDTemplate.executeQuery(sql, new BeanListHandler<>(Grade.class), teachingTaskNum);
     }
 
     @Override

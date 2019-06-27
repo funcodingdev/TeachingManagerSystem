@@ -1,5 +1,6 @@
 package com.teaching.dao;
 
+import com.teaching.domain.Grade;
 import com.teaching.domain.Student;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public interface IStudentDao {
 
     List<Student> getStudents(String keyWord, Integer pageStart, Integer pageEnd);//获取模糊查询当前范围的学生
 
-    List<Student> getSCStudent(String teachingTaskNum);//获取选课学生
+    List<Grade> getSCGrade(String teachingTaskNum);//获取选课学生及其成绩
 
     int deleteStudent(String id);//删除学生
 

@@ -1,5 +1,6 @@
 package com.teaching.service;
 
+import com.teaching.domain.Grade;
 import com.teaching.domain.ResponseModel;
 import com.teaching.domain.Student;
 
@@ -18,7 +19,7 @@ public interface IStudentService {
 
     ResponseModel<Student> getStudents(String keyWord, int currentPage, int perPageSize);//模糊查询
 
-    ResponseModel<Student> getSCStudent(String teachingTaskNum);//获取选课学生
+    ResponseModel<Grade> getSCGrade(String teachingTaskNum);//获取选课学生及其成绩
 
     boolean deleteStudent(String id);//删除学生
 
