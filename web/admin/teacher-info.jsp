@@ -54,13 +54,14 @@
         table.render({
             elem: '#teaTable'
             , id: 'myTable'
-            , height: 'full-200'
+            , height: 'full-100'
             , url: '<%=request.getContextPath()%>/TeacherServlet?action=getTeachers' //数据接口
             , cellMinWidth: 80 //全局定义常规单元格的最小宽度
             , title: '教师表'
             , page: true //开启分页
             , limit:15
             , limits: [15, 30, 45,60]
+            , even:true
             , curr: 1 //设定初始在第 1 页
             // , toolbar: 'default' //开启工具栏，此处显示默认图标
             , cols: [[ //表头
@@ -132,9 +133,9 @@
                 skin: 'layui-layer-lan',
                 closeBtn: 2,
                 // skin: 'layui-layer-rim', // 加上边框
-                area: ["740px", "460px"], // 宽高
+                area: ["740px", "360px"], // 宽高
                 // maxmin: true, //开启最大化最小化按钮
-                content: '../admin/teacherInfo.jsp',
+                content: '../admin/teacher-info-detail.jsp',
                 end: function () {
                     flushTab();
                 }

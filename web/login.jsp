@@ -26,22 +26,22 @@
         <div class="layui-form-item">
             <label class="layui-form-label">用户账号</label>
             <div class="layui-input-block">
-                <input type="text" name="id" required lay-verify="required" placeholder="请输入用户名"
+                <input type="text" id="username" name="id" required lay-verify="required" placeholder="请输入用户名"
                        autocomplete="off" class="layui-input" value="${id}"/>
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">登陆密码</label>
             <div class="layui-input-block">
-                <input type="password" name="password" required lay-verify="required" placeholder="请输入密码"
+                <input type="password" id="password" name="password" required lay-verify="required" placeholder="请输入密码"
                        autocomplete="off" class="layui-input"/>
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">登陆角色</label>
             <div class="layui-input-block">
-                <select name="role" lay-verify="required">
-                    <option value=""></option>
+                <select id="role" name="role" lay-verify="required">
+                    <option value="">请选择</option>
                     <option value="0">学生</option>
                     <option value="1">教师</option>
                     <option value="2">管理员</option>
@@ -50,14 +50,17 @@
         </div>
         <div class="layui-form-item">
             <div class="layui-input-block login-btn">
-                <button class="layui-btn layui-btn-lg" lay-submit lay-filter="loginForm">登陆</button>
+                <button class="layui-btn layui-btn-lg" lay-submit  lay-filter="loginForm" id="loginBtn">登陆</button>
             </div>
         </div>
     </form>
 </div>
 <script>
-    layui.use('form', function () {
-        var form = layui.form;
+    layui.use(['form','element','layer'], function () {
+        var form = layui.form
+            , element = layui.element//元素操作
+            , layer = layui.layer
+            , $ = layui.jquery;
         //监听提交
         form.on('submit(loginForm)', function (data) {
             return true;

@@ -39,6 +39,12 @@ public class StudentDaoImpl implements IStudentDao {
     }
 
     @Override
+    public List<Student> getSCStudent(String teachingTaskNum) {
+        String sql = "select Student.*,selectCourse.grade from selectCourse inner join Student on selectCourse.stuId = Student.id where teachingTaskNum = ?";
+        return CRUDTemplate.executeQuery(sql, new BeanListHandler<>(Student.class), teachingTaskNum);
+    }
+
+    @Override
     public int deleteStudent(String id) {
         String sql = "delete from student where id = ?";
         return CRUDTemplate.executeUpdate(sql, id);

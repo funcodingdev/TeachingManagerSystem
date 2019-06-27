@@ -39,6 +39,12 @@ public class CourseImpl implements ICourseDao {
     }
 
     @Override
+    public List<Course> getTeaCourses(String teaId, String keyWord, Integer pageStart, Integer pageEnd) {
+        String sql = "select * from (SELECT * FROM(SELECT ROWNUM NO,tt.* FROM (select Course.* from TeachingTask inner join Teacher on TeachingTask.teacherId = Teacher.id inner join Course on TeachingTask.courseName = Course.name where Teacher.id = ? and courseName like '%" + keyWord + "%' ORDER BY teachingTaskNum ASC) tt WHERE ROWNUM<=?) WHERE NO >=?)";
+        return CRUDTemplate.executeQuery(sql, new BeanListHandler<>(Course.class), teaId, pageEnd, pageStart);
+    }
+
+    @Override
     public int deleteCourse(String id) {
         String sql = "delete from course where id = ?";
         return CRUDTemplate.executeUpdate(sql, id);

@@ -18,6 +18,15 @@ public class Teacher implements Serializable {
     public Teacher() {
     }
 
+    public Teacher(String id, String name, String sex, Number age, String identity, String password) {
+        this.id = id;
+        this.name = name;
+        this.sex = sex;
+        this.age = age;
+        this.identity = identity;
+        this.password = password;
+    }
+
     public String getId() {
         return id;
     }

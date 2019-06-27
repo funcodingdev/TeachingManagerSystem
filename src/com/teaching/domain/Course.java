@@ -3,6 +3,7 @@ package com.teaching.domain;
 import java.io.Serializable;
 
 /**
+ * 课程实体类
  * @Author: fangju
  * @Date: 2019/6/25
  */
@@ -13,6 +14,13 @@ public class Course implements Serializable {
     private Number period;
 
     public Course() {
+    }
+
+    public Course(String id, String name, Number credit, Number period) {
+        this.id = id;
+        this.name = name;
+        this.credit = credit;
+        this.period = period;
     }
 
     public String getId() {

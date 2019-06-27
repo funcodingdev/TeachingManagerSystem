@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -12,12 +13,12 @@
 <body>
 <!-- 查询条件 -->
 <div style="margin: 15px; border: 1px dotted #ccc; border-radius: 8px">
-    <form id="myForm" class="layui-form" action="#" style="margin: 27px">
+    <form id="myForm" class="layui-form" action="" style="margin: 27px">
         <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">学号</label>
                 <div class="layui-input-block">
-                    <input type="text" id="id" name="id" lay-verify="required" placeholder="密码默认为学号" autocomplete="off"
+                    <input type="text" id="id" name="id" lay-verify="required|number" placeholder="密码默认为学号" autocomplete="off"
                            class="layui-input">
                 </div>
             </div>
@@ -42,13 +43,13 @@
             <div class="layui-inline">
                 <label class="layui-form-label">年龄</label>
                 <div class="layui-input-block">
-                    <input type="number" id="age" name="age" lay-verify="required" autocomplete="off"
+                    <input type="number" id="age" name="age" lay-verify="required|number" autocomplete="off"
                            class="layui-input">
                 </div>
             </div>
         </div>
         <div class="layui-form-item">
-            <div class="layui-inline">
+            <div class="layui-form-item">
                 <label class="layui-form-label">院系</label>
                 <div class="layui-input-block">
                     <select id="department" name="department" required lay-verify="required" lay-filter="department">
@@ -65,28 +66,26 @@
                     </select>
                 </div>
             </div>
-            <div class="layui-inline">
+            <div class="layui-form-item">
                 <label class="layui-form-label">班级</label>
                 <div class="layui-input-block">
                     <select id="sClass" name="sClass" required lay-verify="required">
-                        <option value=""></option>
-                        <c:forEach items="${allSClass}" var="sclass">
-                            <option value="${sclass.name}">${sclass.name}</option>
-                        </c:forEach>
+                        <option value="">请选择</option>
                     </select>
                 </div>
             </div>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">手机号</label>
-            <div class="layui-input-block">
-                <input type="number" name="phone" class="layui-input" placeholder="请输入手机号"
-                       autocomplete="off" value="${stu.phone}"/>
-            </div>
-        </div>
+        <%--<div class="layui-form-item">--%>
+            <%--<label class="layui-form-label">手机号</label>--%>
+            <%--<div class="layui-input-block">--%>
+                <%--<input type="number" name="phone" class="layui-input" placeholder="请输入手机号"--%>
+                       <%--autocomplete="off" value="${stu.phone}"/>--%>
+            <%--</div>--%>
+        <%--</div>--%>
         <div class="layui-form-item">
             <div class="layui-input-block login-btn">
-                <button id="submitBtn" class="layui-btn layui-btn-lg"  lay-filter="updateForm">确定</button>
+                <button class="layui-btn  layui-btn-submit " lay-submit="" lay-filter="addForm">确定</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
             </div>
         </div>
     </form>
@@ -99,7 +98,35 @@
             , element = layui.element
             , form = layui.form;
         //监听提交
-        form.on('submit(updateForm)', function (data) {
+        form.on('submit(addForm)', function (message) {
+            //注意：parent 是 JS 自带的全局对象，可用于操作父页面
+            var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+            $.ajax({
+                url:'<%=request.getContextPath()%>/StudentServlet?action=insertStudent',
+                type:'POST',
+                data:{
+                    id:message.field.id
+                    ,name:message.field.name
+                    ,sex:message.field.sex
+                    ,age:message.field.age
+                    ,department:message.field.department
+                    ,sClass:message.field.sClass
+                },
+                dataType:'json',
+                async: false,
+                success:function (msg) {
+                    if(msg == "true"){
+                        // layer.closeAll('loading');
+                        // layer.load(2);
+                        layer.msg("添加成功", {icon: 6});
+                        setTimeout(function(){
+                            parent.layer.close(index);//关闭所有的弹出层
+                        }, 1000);
+                    }else{
+                        layer.msg("添加失败", {icon: 5});
+                    }
+                }
+            });
             return false;
         });
         form.on('select(department)', function (data) {
@@ -124,67 +151,12 @@
             });
             form.render('select');
         });
-
-        //注意：parent 是 JS 自带的全局对象，可用于操作父页面
-        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-        //给父页面传值
-        $('#submitBtn').on('click', function(){
-            var id = $('#id').val();
-            if(id == '' || id == undefined || id == null){
-                parent.layer.msg('ID不能为空');
-                return;
-            }
-            var name = $('#name').val();
-            if(name == '' || name == undefined || name == null){
-                parent.layer.msg('姓名不能为空');
-                return;
-            }
-            var age = $('#age').val();
-            if(age == '' || age == undefined || age == null){
-                parent.layer.msg('年龄不能为空');
-                return;
-            }
-            var department = $('#department').val();
-            if(department == '' || department == undefined || department == null){
-                parent.layer.msg('学院不能为空');
-                return;
-            }
-            var sclass = $('#sClass').val();
-            if(sclass == '' || sclass == undefined || sclass == null){
-                parent.layer.msg('班级不能为空');
-                return;
-            }
-            var array = $('#myForm').serializeArray();
-            var obj = {};//分配内存空间
-            for (var i = 0; i < array.length; i++) {//数据类型为"自定义类的字段名=数据"后台会自动对数据进行匹配
-                obj[array[i].name] = array[i].value;
-            }
-            $.ajax({
-                url: "<%=request.getContextPath()%>/StudentServlet?action=insertStudent",
-                data:{formdata:JSON.stringify(obj)},//传递数据
-                type:"post",
-                dataType: "json",
-                success: function (data) {
-                    if(data != null){
-                        parent.layer.close(index);
-                    }else{
-                        parent.layer.msg("插入失败");
-                    }
-                },
-                fail:function(e){
-                    alert("fail");
-                },
-                error:function (data) {
-                    parent.layer.msg("插入失败");
-                }
-            });
-        });
     });
 
-    $(function () {
-        $("#department option[value=${stu.department}]").prop("selected", true);
-        $("#sClass option[value=${stu.sClass}]").prop("selected", true);
-    });
+    <%--$(function () {--%>
+        <%--$("#department option[value=${stu.department}]").prop("selected", true);--%>
+        <%--$("#sClass option[value=${stu.sClass}]").prop("selected", true);--%>
+    <%--});--%>
 </script>
 </body>
 </html>

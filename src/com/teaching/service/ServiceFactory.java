@@ -7,15 +7,15 @@ import com.teaching.service.impl.*;
  * @Date: 2019/6/24
  */
 public class ServiceFactory {
-    public static IStudentService getStudentService(){
+    public static IStudentService getStudentService() {
         return new StudentServiceImpl();
     }
 
-    public static ISClassService getSClassService(){
+    public static ISClassService getSClassService() {
         return new SClassServiceImpl();
     }
 
-    public static IDeptService getDeptService(){
+    public static IDeptService getDeptService() {
         return new DeptServiceImpl();
     }
 
@@ -33,5 +33,9 @@ public class ServiceFactory {
 
     public static ITeachingTaskService getTeachingTaskService() {
         return new TeachingTaskServiceImpl();
+    }
+
+    public static ISCourseService getSCourseService() {
+        return new ISCourseServiceImpl();
     }
 }

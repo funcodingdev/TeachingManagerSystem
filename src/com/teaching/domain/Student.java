@@ -21,6 +21,16 @@ public class Student implements Serializable {
     public Student() {
     }
 
+    public Student(String id, String name, String sex, Number age, String department, String sclass, String password) {
+        this.id = id;
+        this.name = name;
+        this.sex = sex;
+        this.age = age;
+        this.department = department;
+        this.sclass = sclass;
+        this.password = password;
+    }
+
     public String getId() {
         return id;
     }

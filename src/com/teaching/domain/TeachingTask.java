@@ -19,6 +19,13 @@ public class TeachingTask implements Serializable {
     public TeachingTask() {
     }
 
+    public TeachingTask(String teachingTaskNum, String courseName, String teacherId, String location) {
+        this.teachingTaskNum = teachingTaskNum;
+        this.courseName = courseName;
+        this.teacherId = teacherId;
+        this.location = location;
+    }
+
     public String getTeachingTaskNum() {
         return teachingTaskNum;
     }

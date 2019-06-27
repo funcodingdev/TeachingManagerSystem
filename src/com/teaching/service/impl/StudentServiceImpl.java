@@ -53,6 +53,13 @@ public class StudentServiceImpl implements IStudentService {
     }
 
     @Override
+    public ResponseModel<Student> getSCStudent(String teachingTaskNum) {
+        studentDao = DaoFactory.getStudentDao();
+        List<Student> students = studentDao.getSCStudent(teachingTaskNum);
+        return ResponseModel.buildSuccess(students.size(),students);
+    }
+
+    @Override
     public boolean deleteStudent(String id) {
         studentDao = DaoFactory.getStudentDao();
         int result = studentDao.deleteStudent(id);

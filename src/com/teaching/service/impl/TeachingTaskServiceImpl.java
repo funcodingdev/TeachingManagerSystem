@@ -54,6 +54,36 @@ public class TeachingTaskServiceImpl implements ITeachingTaskService {
     }
 
     @Override
+    public ResponseModel<TeachingTask> getAllTeachingTaskExceptThis(String stuId, String keyWord, int currentPage, int perPageSize) {
+        teachingTaskDao = DaoFactory.getTeachingTaskDao();
+        int totalNum = teachingTaskDao.getTTCount(keyWord);
+        ResponseModel<TeachingTask> ttModel = new ResponseModel<>(totalNum, currentPage, perPageSize);
+        List<TeachingTask> teachingTasks = teachingTaskDao.getAllTeachingTaskExceptThis(stuId, keyWord, ttModel.getPageStart(), ttModel.getPageEnd());
+        ttModel.setData(teachingTasks);
+        return ttModel;
+    }
+
+    @Override
+    public ResponseModel<TeachingTask> getTeachingTaskSelf(String stuId, String keyWord, int currentPage, int perPageSize) {
+        teachingTaskDao = DaoFactory.getTeachingTaskDao();
+        int totalNum = teachingTaskDao.getTTCount(keyWord);
+        ResponseModel<TeachingTask> ttModel = new ResponseModel<>(totalNum,currentPage,perPageSize);
+        List<TeachingTask> teachingTasks = teachingTaskDao.getAllTeachingTaskSelf(stuId,keyWord,ttModel.getPageStart(), ttModel.getPageEnd());
+        ttModel.setData(teachingTasks);
+        return ttModel;
+    }
+
+    @Override
+    public ResponseModel<TeachingTask> getTeaTeachingTasks(String teaId, String keyWord, int currentPage, int perPageSize) {
+        teachingTaskDao = DaoFactory.getTeachingTaskDao();
+        int totalNum = teachingTaskDao.getTTCountByTeaId(teaId);
+        ResponseModel<TeachingTask> ttModel = new ResponseModel<>(totalNum,currentPage,perPageSize);
+        List<TeachingTask> teachingTasks = teachingTaskDao.getTeaTeachingTasks(teaId,keyWord,ttModel.getPageStart(), ttModel.getPageEnd());
+        ttModel.setData(teachingTasks);
+        return ttModel;
+    }
+
+    @Override
     public boolean deleteTeachingTask(String teachingTask) {
         teachingTaskDao = DaoFactory.getTeachingTaskDao();
         int result = teachingTaskDao.deleteTeachingTask(teachingTask);

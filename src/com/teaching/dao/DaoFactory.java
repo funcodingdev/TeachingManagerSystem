@@ -33,4 +33,8 @@ public class DaoFactory {
     public static ITeachingTaskDao getTeachingTaskDao() {
         return new TeachingTaskImpl();
     }
+
+    public static ISCourseDao getSCourseDao() {
+        return new SCourseDaoImpl();
+    }
 }

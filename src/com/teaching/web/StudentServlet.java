@@ -37,10 +37,9 @@ public class StudentServlet extends BaseServlet {
         String keyWord = request.getParameter("keyWord");
         ResponseModel<Student> stuModel = null;
         if (keyWord == null || keyWord.isEmpty()) {
-            stuModel = studentService.getAllStudent();
-        } else {
-            stuModel = studentService.getStudents(keyWord);
+            keyWord = "";
         }
+        stuModel = studentService.getStudents(keyWord);
         JSONObject object = (JSONObject) JSON.toJSON(stuModel);
         return object.toJSONString();
     }
@@ -64,12 +63,26 @@ public class StudentServlet extends BaseServlet {
         ResponseModel<Student> stuModel = null;
         studentService = ServiceFactory.getStudentService();
         if (keyWord == null || keyWord.isEmpty()) {
-            stuModel = studentService.getStudents(Integer.valueOf(page), Integer.valueOf(limit));
-        } else {
-            stuModel = studentService.getStudents(keyWord, Integer.valueOf(page), Integer.valueOf(limit));
+            keyWord = "";
         }
+        stuModel = studentService.getStudents(keyWord, Integer.valueOf(page), Integer.valueOf(limit));
         JSONObject object = (JSONObject) JSON.toJSON(stuModel);
         return object.toJSONString();
+    }
+
+    /**
+     * 获取选课学生
+     * @param request
+     * @param response
+     * @return
+     * @throws ServletException
+     * @throws IOException
+     */
+    public String getSCStudents(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String teachingTaskNum = request.getParameter("teachingTaskNum");
+        studentService = ServiceFactory.getStudentService();
+        ResponseModel<Student> stuModel = studentService.getSCStudent(teachingTaskNum);
+        return JSON.toJSONString(stuModel);
     }
 
     /**
@@ -105,25 +118,24 @@ public class StudentServlet extends BaseServlet {
      * @throws IOException
      */
     public String insertStudent(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String data = request.getParameter("formdata");
         //获取表单学生信息
-        Student stu = JSON.parseObject(data, Student.class);
-        Department department = ServiceFactory.getDeptService().getDeptName(stu.getDepartment());
+        String id = request.getParameter("id");
+        String name = request.getParameter("name");
+        String sex = request.getParameter("sex");
+        String age = request.getParameter("age");
+        String dept = request.getParameter("department");
+        String sClass = request.getParameter("sClass");
+        Department department = ServiceFactory.getDeptService().getDeptName(dept);
         if (department == null) {
-            return null;
+            return "[false]";
         }
+        Student stu = new Student(id,name,sex,Integer.valueOf(age),dept,sClass,id);
         //设置部门名
         stu.setDepartment(department.getName());
-        //设置密码
-        stu.setPassword(stu.getId());
         studentService = ServiceFactory.getStudentService();
-        if (studentService.insertStudent(stu)) {
-            JSONArray array = new JSONArray();
-            array.add(true);
-            return array.toJSONString();
-        } else {
-            return null;
-        }
+        JSONArray array = new JSONArray();
+        array.add(studentService.insertStudent(stu));
+        return array.toJSONString();
     }
 
 }

@@ -17,6 +17,8 @@ public interface ICourseDao {
 
     List<Course> getCourses(String keyWord, Integer pageStart, Integer pageEnd);//获取模糊查询当前范围的课程
 
+    List<Course> getTeaCourses(String teaId, String keyWord, Integer pageStart, Integer pageEnd);//获取教师所教课程
+
     int deleteCourse(String id);//删除课程
 
     int insertCourse(Course course);//插入课程

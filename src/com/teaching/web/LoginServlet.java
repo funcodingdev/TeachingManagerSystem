@@ -29,11 +29,14 @@ public class LoginServlet extends BaseServlet {
      * @param response
      * @return
      */
-    public void login(HttpServletRequest request, HttpServletResponse response) {
+    public String login(HttpServletRequest request, HttpServletResponse response) {
         String username = request.getParameter("id");
         String password = request.getParameter("password");
         String role = request.getParameter("role");
-//        System.out.println(username + "," + password + "," + role);
+        System.out.println(username + "," + password + "," + role);
+        if(username == null || password == null || role == null){
+            return null;
+        }
         String invoke = null;
         String basePath = request.getContextPath();
         Object loginObj = null;//登陆对象
@@ -70,16 +73,21 @@ public class LoginServlet extends BaseServlet {
                 break;
             }
         }
-        if (invoke == null) {//验证失败
-            request.setAttribute("error", "用户名或密码错误！");
-            request.setAttribute("name", username);
-        } else {//验证成功
-            session.setAttribute("obj", loginObj);
-            try {
+        try {
+            if (invoke == null) {//验证失败
+                request.setAttribute("error", "用户名或密码错误！");
+                request.setAttribute("id", username);
+                request.getRequestDispatcher("/login.jsp").forward(request,response);
+            } else {//验证成功
+                session.setAttribute("obj", loginObj);
                 response.sendRedirect(invoke);
-            } catch (IOException e) {
-                e.printStackTrace();
             }
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            return null;
         }
     }
 

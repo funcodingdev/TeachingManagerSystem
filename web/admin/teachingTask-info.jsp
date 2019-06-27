@@ -19,9 +19,9 @@
 <form class="layui-form" action="">
     <div class="layui-form-item">
         <div class="layui-inline">
-            <label class="layui-form-label">教学任务号</label>
+            <label class="layui-form-label">课程名</label>
             <div class="layui-input-block">
-                <input type="text" id="id" lay-verify="required" placeholder="请输入教学任务号" autocomplete="off"
+                <input type="text" id="id" lay-verify="required" placeholder="请输入课程名" autocomplete="off"
                        class="layui-input">
             </div>
         </div>
@@ -36,7 +36,7 @@
 
 <table class="layui-hide" id="stuTable" lay-filter="stu"></table>
 <script type="text/html" id="stuBar">
-    <%--<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>--%>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
@@ -54,13 +54,14 @@
         table.render({
             elem: '#stuTable'
             , id: 'myTable'
-            , height: 'full-200'
+            , height: 'full-100'
             , url: '<%=request.getContextPath()%>/TeachingTaskServlet?action=getTeachingTasks' //数据接口
             , cellMinWidth: 80 //全局定义常规单元格的最小宽度
-            , title: '学生表'
+            , title: '教学计划表'
             , page: true //开启分页
             , limit: 15
             , limits: [15, 30, 45, 60]
+            , even:true
             , curr: 1 //设定初始在第 1 页
             // , toolbar: 'default' //开启工具栏，此处显示默认图标
             , cols: [[ //表头
@@ -86,7 +87,7 @@
                         type: 'get',
                         url: '<%=request.getContextPath()%>/TeachingTaskServlet?action=deleteTeachingTask',
                         data: {
-                            id: data.teachingTaskNum//传向后端的数据
+                            teachingTaskNum: data.teachingTaskNum//传向后端的数据
                         },
                         contentType: 'application/json',
                         success: function (result) {
@@ -102,15 +103,15 @@
                 // layer.msg('编辑操作' + JSON.stringify(data));
                 json = JSON.stringify(data);
                 layer.open({
-                    title: '修改学生信息',
+                    title: '修改教学计划信息',
                     type: 2,
                     skin: 'layui-layer-lan',
                     closeBtn: 2,
                     area: ["740px", "460px"], // 宽高
-                    content: '../admin/teachingTask-Info-detail.jsp',
-                    // end: function () {
-                    //     flushTab();
-                    // },
+                    content: '../admin/teachingTask-info-update-detail.jsp',
+                    end: function () {
+                        flushTab();
+                    },
                     success: function (layero, index) {
                         layer.msg(layero, index);
                     }
@@ -129,14 +130,14 @@
         // 单击添加
         $("#addId").click(function () {
             layer.open({
-                title: '添加学生信息',
+                title: '添加教学计划信息',
                 type: 2,
                 skin: 'layui-layer-lan',
                 closeBtn: 2,
                 // skin: 'layui-layer-rim', // 加上边框
                 area: ["740px", "460px"], // 宽高
                 // maxmin: true, //开启最大化最小化按钮
-                content: '../admin/teachingTask-Info-detail.jsp',
+                content: '../admin/teachingTask-info-insert-detail.jsp',
                 end: function () {
                     flushTab();
                 }

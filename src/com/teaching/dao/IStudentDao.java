@@ -17,6 +17,8 @@ public interface IStudentDao {
 
     List<Student> getStudents(String keyWord, Integer pageStart, Integer pageEnd);//获取模糊查询当前范围的学生
 
+    List<Student> getSCStudent(String teachingTaskNum);//获取选课学生
+
     int deleteStudent(String id);//删除学生
 
     int insertStudent(Student stu);//插入学生

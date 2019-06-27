@@ -19,13 +19,13 @@
                     <a href="<%=request.getContextPath()%>/admin/teachingTask-info.jsp" target="mainFrame">教学计划</a>
                 </li>
                 <li class="layui-nav-item">
+                    <a href="<%=request.getContextPath()%>/admin/course-info.jsp" target="mainFrame">课程信息</a>
+                </li>
+                <li class="layui-nav-item">
                     <a href="<%=request.getContextPath()%>/admin/teacher-info.jsp" target="mainFrame">教师信息</a>
                 </li>
                 <li class="layui-nav-item">
                     <a href="<%=request.getContextPath()%>/admin/student-info.jsp" target="mainFrame">学生信息</a>
-                </li>
-                <li class="layui-nav-item">
-                    <a href="<%=request.getContextPath()%>/admin/course-info.jsp" target="mainFrame">课程信息</a>
                 </li>
             </ul>
         </div>
@@ -52,7 +52,7 @@
     <div>
         <div style="padding: 15px;">
             <iframe id="option" name="mainFrame" src="<%=request.getContextPath()%>/index.jsp"
-                    style="width: 100%;height: 100%;" frameborder="0">
+                    style="width: 100%;height: 90%;" frameborder="0">
 
             </iframe>
         </div>

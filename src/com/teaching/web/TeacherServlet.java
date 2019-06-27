@@ -15,6 +15,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @Author: fangju
@@ -34,15 +35,9 @@ public class TeacherServlet extends BaseServlet {
      */
     public String getAllTeacher(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         teacherService = ServiceFactory.getTeacherService();
-        String keyWord = request.getParameter("keyWord");
-        ResponseModel<Teacher> stuModel = null;
-        if(keyWord == null || keyWord.isEmpty()){
-            stuModel = teacherService.getAllTeacher();
-        }else{
-            stuModel = teacherService.getTeachers(keyWord);
-        }
-        JSONObject object = (JSONObject) JSON.toJSON(stuModel);
-        return object.toJSONString();
+        ResponseModel<Teacher> allTeacher = teacherService.getAllTeacher();
+        List<Teacher> teachers = allTeacher.getData();
+        return JSON.toJSONString(teachers);
     }
 
     /**
@@ -64,10 +59,9 @@ public class TeacherServlet extends BaseServlet {
         ResponseModel<Teacher> teaModel = null;
         teacherService = ServiceFactory.getTeacherService();
         if (keyWord == null || keyWord.isEmpty()) {
-            teaModel = teacherService.getTeachers(Integer.valueOf(page), Integer.valueOf(limit));
-        } else {
-            teaModel = teacherService.getTeachers(keyWord, Integer.valueOf(page), Integer.valueOf(limit));
+            keyWord = "";
         }
+        teaModel = teacherService.getTeachers(keyWord, Integer.valueOf(page), Integer.valueOf(limit));
         JSONObject object = (JSONObject) JSON.toJSON(teaModel);
         return object.toJSONString();
     }
@@ -105,19 +99,17 @@ public class TeacherServlet extends BaseServlet {
      * @throws IOException
      */
     public String insertTeacher(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String data = request.getParameter("formdata");
         //获取表单教师信息
-        Teacher teacher = JSON.parseObject(data, Teacher.class);
-        //设置密码
-        teacher.setPassword(teacher.getId());
+        String id = request.getParameter("id");
+        String name = request.getParameter("name");
+        String sex = request.getParameter("sex");
+        String age = request.getParameter("age");
+        String identity = request.getParameter("identity");
+        Teacher teacher = new Teacher(id,name,sex,Integer.valueOf(age),identity,id);
         teacherService = ServiceFactory.getTeacherService();
-        if (teacherService.insertTeacher(teacher)) {
-            JSONArray array = new JSONArray();
-            array.add(true);
-            return array.toJSONString();
-        } else {
-            return null;
-        }
+        JSONArray array = new JSONArray();
+        array.add(teacherService.insertTeacher(teacher));
+        return array.toJSONString();
     }
 
 }

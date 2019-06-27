@@ -3,6 +3,8 @@ package com.teaching.service;
 import com.teaching.domain.Course;
 import com.teaching.domain.ResponseModel;
 
+import java.util.List;
+
 /**
  * @Author: fangju
  * @Date: 2019/6/25
@@ -15,6 +17,8 @@ public interface ICourseService {
     ResponseModel<Course> getCourses(int currentPage, int perPageSize);//获取当前范围的课程
 
     ResponseModel<Course> getCourses(String keyWord, int currentPage, int perPageSize);//模糊查询
+
+    ResponseModel<Course> getTeaCourses(String teaId, String keyWord, int currentPage, int perPageSize);//获取教师所教课程
 
     boolean deleteCourse(String id);//删除课程
 

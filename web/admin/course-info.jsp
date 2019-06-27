@@ -54,13 +54,14 @@
         table.render({
             elem: '#courseTable'
             , id: 'myTable'
-            , height: 'full-200'
+            , height: 'full-100'
             , url: '<%=request.getContextPath()%>/CourseServlet?action=getCourses' //数据接口
             , cellMinWidth: 80 //全局定义常规单元格的最小宽度
             , title: '课程表'
             , page: true //开启分页
-            , limit:15
-            , limits: [15, 30, 45,60]
+            , limit: 15
+            , limits: [15, 30, 45, 60]
+            , even: true
             , curr: 1 //设定初始在第 1 页
             // , toolbar: 'default' //开启工具栏，此处显示默认图标
             , cols: [[ //表头
@@ -99,21 +100,20 @@
                 // layer.msg('编辑操作' + JSON.stringify(data));
                 json = JSON.stringify(data);
                 layer.open({
-                    title: '修改教师信息',
+                    title: '修改课程信息',
                     type: 2,
                     skin: 'layui-layer-lan',
                     closeBtn: 2,
-                    area: ["740px", "460px"], // 宽高
-                    content: '../admin/courseInfo.jsp',
-                    // end: function () {
-                    //     flushTab();
-                    // },
-                    success: function (layero, index) {
-                        layer.msg(layero, index);
+                    area: ["740px", "300px"], // 宽高
+                    content: '../admin/course-info-update-detail.jsp',
+                    end: function () {
+                        flushTab();
                     }
                 });
             }
         });
+
+
         // 单击搜索
         $("#searchId").click(function () {
             // 注意参数(myTable为表格id)
@@ -126,14 +126,14 @@
         // 单击添加
         $("#addId").click(function () {
             layer.open({
-                title: '添加教师信息',
+                title: '添加课程信息',
                 type: 2,
                 skin: 'layui-layer-lan',
                 closeBtn: 2,
                 // skin: 'layui-layer-rim', // 加上边框
-                area: ["740px", "460px"], // 宽高
+                area: ["740px", "300px"], // 宽高
                 // maxmin: true, //开启最大化最小化按钮
-                content: '../admin/courseInfo.jsp',
+                content: '../admin/course-info-insert-detail.jsp',
                 end: function () {
                     flushTab();
                 }

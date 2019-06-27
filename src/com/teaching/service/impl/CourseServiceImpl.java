@@ -53,6 +53,16 @@ public class CourseServiceImpl implements ICourseService {
     }
 
     @Override
+    public ResponseModel<Course> getTeaCourses(String teaId, String keyWord, int currentPage, int perPageSize) {
+        courseDao = DaoFactory.getCourseDao();
+        int totalNum = courseDao.getCourseCount(keyWord);
+        ResponseModel<Course> courseModel = new ResponseModel<>(totalNum, currentPage, perPageSize);
+        List<Course> courses = courseDao.getTeaCourses(teaId,keyWord, courseModel.getPageStart(), courseModel.getPageEnd());
+        courseModel.setData(courses);
+        return courseModel;
+    }
+
+    @Override
     public boolean deleteCourse(String id) {
         courseDao = DaoFactory.getCourseDao();
         int result = courseDao.deleteCourse(id);

@@ -18,6 +18,8 @@ public interface IStudentService {
 
     ResponseModel<Student> getStudents(String keyWord, int currentPage, int perPageSize);//模糊查询
 
+    ResponseModel<Student> getSCStudent(String teachingTaskNum);//获取选课学生
+
     boolean deleteStudent(String id);//删除学生
 
     boolean insertStudent(Student stu);//插入学生
