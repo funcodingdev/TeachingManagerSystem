@@ -17,18 +17,18 @@ public class CourseServiceImpl implements ICourseService {
     private ICourseDao courseDao = null;
 
     @Override
-    public ResponseModel<Course> getAllCourse() {
+    public ResponseModel<Course> getAllCourses() {
         courseDao = DaoFactory.getCourseDao();
-        List<Course> allCourse = courseDao.getAllCourse();
-        ResponseModel<Course> cModel = ResponseModel.buildSuccess(allCourse.size(), allCourse);
+        List<Course> allCourse = courseDao.listAllCourses();
+        ResponseModel<Course> cModel = ResponseModel.buildModelSuccess(allCourse.size(), allCourse);
         return cModel;
     }
 
     @Override
     public ResponseModel<Course> getCourses(String keyWord) {
         courseDao = DaoFactory.getCourseDao();
-        List<Course> allCourse = courseDao.getCourses(keyWord);
-        ResponseModel<Course> cModel = ResponseModel.buildSuccess(allCourse.size(), allCourse);
+        List<Course> allCourse = courseDao.listCourses(keyWord);
+        ResponseModel<Course> cModel = ResponseModel.buildModelSuccess(allCourse.size(), allCourse);
         return cModel;
     }
 
@@ -37,7 +37,7 @@ public class CourseServiceImpl implements ICourseService {
         courseDao = DaoFactory.getCourseDao();
         int totalNum = courseDao.getCourseCount();
         ResponseModel<Course> courseModel = new ResponseModel<>(totalNum, currentPage, perPageSize);
-        List<Course> courses = courseDao.getCourses(courseModel.getPageStart(), courseModel.getPageEnd());
+        List<Course> courses = courseDao.listCourses(courseModel.getPageStart(), courseModel.getPageEnd());
         courseModel.setData(courses);
         return courseModel;
     }
@@ -47,17 +47,17 @@ public class CourseServiceImpl implements ICourseService {
         courseDao = DaoFactory.getCourseDao();
         int totalNum = courseDao.getCourseCount(keyWord);
         ResponseModel<Course> courseModel = new ResponseModel<>(totalNum, currentPage, perPageSize);
-        List<Course> courses = courseDao.getCourses(keyWord, courseModel.getPageStart(), courseModel.getPageEnd());
+        List<Course> courses = courseDao.listCourses(keyWord, courseModel.getPageStart(), courseModel.getPageEnd());
         courseModel.setData(courses);
         return courseModel;
     }
 
     @Override
-    public ResponseModel<Course> getTeaCourses(String teaId, String keyWord, int currentPage, int perPageSize) {
+    public ResponseModel<Course> getCoursesToTea(String teaId, String keyWord, int currentPage, int perPageSize) {
         courseDao = DaoFactory.getCourseDao();
         int totalNum = courseDao.getCourseCount(keyWord);
         ResponseModel<Course> courseModel = new ResponseModel<>(totalNum, currentPage, perPageSize);
-        List<Course> courses = courseDao.getTeaCourses(teaId,keyWord, courseModel.getPageStart(), courseModel.getPageEnd());
+        List<Course> courses = courseDao.listCoursesToTea(teaId,keyWord, courseModel.getPageStart(), courseModel.getPageEnd());
         courseModel.setData(courses);
         return courseModel;
     }

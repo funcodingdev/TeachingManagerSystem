@@ -45,9 +45,15 @@
             </div>
         </div>
         <div class="layui-form-item">
+            <label class="layui-form-label">开课时间</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input layui-disabled" id="startTime" name="startTime" lay-verify="required" readonly
+                       placeholder="请选择开课时间">
+            </div>
+        </div>
+        <div class="layui-form-item">
             <div class="layui-input-block login-btn">
                 <button class="layui-btn  layui-btn-submit " lay-submit="" lay-filter="addForm">确定</button>
-                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
             </div>
         </div>
     </form>
@@ -72,17 +78,18 @@
                     , courseName: message.field.courseName
                     , teacherId: message.field.teacherId
                     , location: message.field.location
+                    , startTime:message.field.startTime
                 },
                 dataType: 'json',
                 async: false,
-                success: function (msg) {
-                    if (msg == "true") {
-                        layer.msg("修改成功", {icon: 6});
+                success: function (result) {
+                    if (result.type == true) {
+                        layer.msg(result.msg, {icon: 6});
                         setTimeout(function () {
                             parent.layer.close(index);//关闭所有的弹出层
                         }, 1000);
                     } else {
-                        layer.msg("修改失败", {icon: 5});
+                        layer.msg(result.msg, {icon: 5});
                     }
                 }
             });
@@ -90,7 +97,7 @@
         });
         $(function () {
             $.ajax({
-                url: "<%=request.getContextPath()%>/TeacherServlet?action=getAllTeacher",//请求地址
+                url: "<%=request.getContextPath()%>/TeacherServlet?action=listAllTeachers",//请求地址
                 type: "POST",//请求方式
                 dataType: "json",//返回数据类型
                 contentType: "application/json",
@@ -114,7 +121,8 @@
                 "teachingTaskNum": parent_json.teachingTaskNum,
                 "courseName":parent_json.courseName,
                 "teacherId":parent_json.teacherId,
-                "location":parent_json.location
+                "location":parent_json.location,
+                "startTime":new Date(parent_json.startTime).toLocaleDateString().replace(/\//g, "-")
             });
         })
     });

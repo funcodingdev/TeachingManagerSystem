@@ -21,11 +21,15 @@ public interface IStudentService {
 
     ResponseModel<Grade> getSCGrade(String teachingTaskNum);//获取选课学生及其成绩
 
+    boolean updateSCGrade(Grade grade);//修改课程成绩
+
     boolean deleteStudent(String id);//删除学生
 
     boolean insertStudent(Student stu);//插入学生
 
     boolean updateStudent(Student stu);//更新学生
+
+    boolean updateStuPassword(String stuId,String oldPassword,String newPassword);//更新学生密码
 
     Student findStudent(String id, String password);//查找一个学生
 }

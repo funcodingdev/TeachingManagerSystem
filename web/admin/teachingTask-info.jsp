@@ -55,31 +55,36 @@
             elem: '#stuTable'
             , id: 'myTable'
             , height: 'full-100'
-            , url: '<%=request.getContextPath()%>/TeachingTaskServlet?action=getTeachingTasks' //数据接口
+            , url: '<%=request.getContextPath()%>/TeachingTaskServlet?action=listTeachingTasks' //数据接口
             , cellMinWidth: 80 //全局定义常规单元格的最小宽度
             , title: '教学计划表'
             , page: { //
                 layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
-                ,curr: 1 //设定初始在第 1 页
-                ,groups: 1 //只显示 1 个连续页码
-                ,first: false //不显示首页
-                ,last: false //不显示尾页
+                , curr: 1 //设定初始在第 1 页
+                , groups: 1 //只显示 1 个连续页码
+                , first: false //不显示首页
+                , last: false //不显示尾页
             }
             , limit: 15
             , limits: [15, 30, 45, 60]
-            , even:true
+            , even: true
             , autoSort: false
             , curr: 1 //设定初始在第 1 页
             // , toolbar: 'default' //开启工具栏，此处显示默认图标
             , cols: [[ //表头
-                {type: 'checkbox', fixed: 'left'}
-                , {field: 'teachingTaskNum', title: '教学任务号', sort: true, fixed: 'left'}
+                {field: 'teachingTaskNum', title: '教学任务号', sort: true, fixed: 'left'}
                 , {field: 'courseId', title: '课程编号', sort: true}
                 , {field: 'courseName', title: '课程名'}
                 , {field: 'teacherId', title: '教师编号', sort: true}
                 , {field: 'teacherName', title: '教师姓名'}
                 , {field: 'totalNum', title: '选课总人数', sort: true}
                 , {field: 'location', title: '上课地点'}
+                , {
+                    field: 'startTime',
+                    title: '开课时间',
+                    sort: true,
+                    templet: '<div>{{ layui.util.toDateString(d.startTime, "yyyy-MM-dd") }}</div>'
+                }
                 , {fixed: 'right', align: 'center', toolbar: '#stuBar'}
             ]]
         });
@@ -88,7 +93,7 @@
             var data = obj.data //获得当前行数据
                 , layEvent = obj.event; //获得 lay-event 对应的值
             if (layEvent === 'del') {
-                layer.confirm('真的删除行么', function (index) {
+                layer.confirm('真的要删除此教学任务么', function (index) {
                     //向服务端发送删除指令
                     $.ajax({
                         type: 'get',
@@ -98,11 +103,12 @@
                         },
                         contentType: 'application/json',
                         success: function (result) {
-                            layer.msg('删除成功', {icon: 1}, {time: 2000});
-                            flushTab();
-                        },
-                        error: function (result) {
-                            layer.msg('删除失败', {icon: 2}, {time: 2000});
+                            if (result.type == true) {
+                                layer.msg(result.msg, {icon: 1}, {time: 2000});
+                                flushTab();
+                            } else {
+                                layer.msg(result.msg, {icon: 2}, {time: 2000});
+                            }
                         }
                     });
                 });
@@ -130,7 +136,7 @@
             // 注意参数(myTable为表格id)
             var id = $("#id").val();
             table.reload('myTable', {
-                url: '<%=request.getContextPath()%>/TeachingTaskServlet?action=getTeachingTasks&keyWord=' + id
+                url: '<%=request.getContextPath()%>/TeachingTaskServlet?action=listTeachingTasks&keyWord=' + id
             });
         });
 
@@ -142,7 +148,7 @@
                 skin: 'layui-layer-lan',
                 closeBtn: 2,
                 // skin: 'layui-layer-rim', // 加上边框
-                area: ["740px", "460px"], // 宽高
+                area: ["740px", "680px"], // 宽高
                 // maxmin: true, //开启最大化最小化按钮
                 content: '../admin/teachingTask-info-insert-detail.jsp',
                 end: function () {
@@ -156,7 +162,7 @@
         function flushTab() {
             // $(".layui-laypage-btn")[0].click();
             table.reload('myTable', {
-                url: '<%=request.getContextPath()%>/TeachingTaskServlet?action=getTeachingTasks'
+                url: '<%=request.getContextPath()%>/TeachingTaskServlet?action=listTeachingTasks'
             });
         }
 

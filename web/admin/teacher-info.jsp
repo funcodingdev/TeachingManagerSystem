@@ -55,25 +55,24 @@
             elem: '#teaTable'
             , id: 'myTable'
             , height: 'full-100'
-            , url: '<%=request.getContextPath()%>/TeacherServlet?action=getTeachers' //数据接口
+            , url: '<%=request.getContextPath()%>/TeacherServlet?action=listTeachers' //数据接口
             , cellMinWidth: 80 //全局定义常规单元格的最小宽度
             , title: '教师表'
             , page: { //
                 layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
-                ,curr: 1 //设定初始在第 1 页
-                ,groups: 1 //只显示 1 个连续页码
-                ,first: false //不显示首页
-                ,last: false //不显示尾页
+                , curr: 1 //设定初始在第 1 页
+                , groups: 1 //只显示 1 个连续页码
+                , first: false //不显示首页
+                , last: false //不显示尾页
             }
-            , limit:15
-            , limits: [15, 30, 45,60]
-            , even:true
-            ,autoSort: false
+            , limit: 15
+            , limits: [15, 30, 45, 60]
+            , even: true
+            , autoSort: false
             , curr: 1 //设定初始在第 1 页
             // , toolbar: 'default' //开启工具栏，此处显示默认图标
             , cols: [[ //表头
-                {type: 'checkbox', fixed: 'left'}
-                , {field: 'id', title: 'ID', sort: true, fixed: 'left'}
+                {field: 'id', title: 'ID', sort: true, fixed: 'left'}
                 , {field: 'name', title: '姓名'}
                 , {field: 'sex', title: '性别', sort: true}
                 , {field: 'age', title: '年龄', sort: true}
@@ -86,7 +85,7 @@
             var data = obj.data //获得当前行数据
                 , layEvent = obj.event; //获得 lay-event 对应的值
             if (layEvent === 'del') {
-                layer.confirm('真的删除行么', function (index) {
+                layer.confirm('真的要删除此教师么', function (index) {
                     //向服务端发送删除指令
                     $.ajax({
                         type: 'get',
@@ -96,11 +95,12 @@
                         },
                         contentType: 'application/json',
                         success: function (result) {
-                            layer.msg('删除成功', {icon: 1}, {time: 2000});
-                            flushTab();
-                        },
-                        error: function (result) {
-                            layer.msg('删除失败', {icon: 2}, {time: 2000});
+                            if (result.type == true) {
+                                layer.msg(result.msg, {icon: 1}, {time: 2000});
+                                flushTab();
+                            } else {
+                                layer.msg(result.msg, {icon: 2}, {time: 2000});
+                            }
                         }
                     });
                 });
@@ -128,7 +128,7 @@
             // 注意参数(myTable为表格id)
             var teacherId = $("#id").val();
             table.reload('myTable', {
-                url: '<%=request.getContextPath()%>/TeacherServlet?action=getTeachers&keyWord=' + teacherId
+                url: '<%=request.getContextPath()%>/TeacherServlet?action=listTeachers&keyWord=' + teacherId
             });
         });
 
@@ -154,7 +154,7 @@
         function flushTab() {
             // $(".layui-laypage-btn")[0].click();
             table.reload('myTable', {
-                url: '<%=request.getContextPath()%>/TeacherServlet?action=getTeachers'
+                url: '<%=request.getContextPath()%>/TeacherServlet?action=listTeachers'
             });
         }
 

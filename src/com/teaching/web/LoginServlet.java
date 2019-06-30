@@ -33,7 +33,7 @@ public class LoginServlet extends BaseServlet {
         String username = request.getParameter("id");
         String password = request.getParameter("password");
         String role = request.getParameter("role");
-        System.out.println(username + "," + password + "," + role);
+//        System.out.println(username + "," + password + "," + role);
         if(username == null || password == null || role == null){
             return null;
         }
@@ -75,11 +75,11 @@ public class LoginServlet extends BaseServlet {
         }
         try {
             if (invoke == null) {//验证失败
-                request.setAttribute("error", "用户名或密码错误！");
+                request.setAttribute("message", "用户名或密码错误！");
                 request.setAttribute("id", username);
                 request.getRequestDispatcher("/login.jsp").forward(request,response);
             } else {//验证成功
-                System.out.println(loginObj.toString());
+//                System.out.println(loginObj.toString());
                 session.setAttribute("obj", loginObj);
                 response.sendRedirect(invoke);
             }

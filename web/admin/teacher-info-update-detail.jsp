@@ -63,13 +63,13 @@
         <div class="layui-form-item">
             <label class="layui-form-label">密码</label>
             <div class="layui-input-block">
-                <input type="password" name="password" id="password" class="layui-input" placeholder="请输入密码" autocomplete="off"/>
+                <input type="password" name="password" id="password" class="layui-input" placeholder="请输入密码"
+                       autocomplete="off"/>
             </div>
         </div>
         <div class="layui-form-item">
             <div class="layui-input-block login-btn">
                 <button class="layui-btn  layui-btn-submit " lay-submit="" lay-filter="addForm">确定</button>
-                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
             </div>
         </div>
     </form>
@@ -94,18 +94,18 @@
                     , sex: message.field.sex
                     , age: message.field.age
                     , identity: message.field.identity
-                    , password:message.field.password
+                    , password: message.field.password
                 },
                 dataType: 'json',
                 async: false,
-                success: function (msg) {
-                    if (msg == "true") {
-                        layer.msg("修改成功", {icon: 6});
+                success: function (result) {
+                    if (result.type == true) {
+                        layer.msg(result.msg, {icon: 6});
                         setTimeout(function () {
                             parent.layer.close(index);//关闭所有的弹出层
                         }, 1000);
                     } else {
-                        layer.msg("修改失败", {icon: 5});
+                        layer.msg(result.msg, {icon: 5});
                     }
                 }
             });
@@ -119,7 +119,7 @@
             "sex": parent_json.sex,
             "age": parent_json.age,
             "identity": parent_json.identity,
-            "password":parent_json.password
+            "password": parent_json.password
         });
 
     });

@@ -16,25 +16,25 @@ import java.util.List;
  */
 public class StudentDaoImpl implements IStudentDao {
     @Override
-    public List<Student> getAllStudent() {
+    public List<Student> listAllStudents() {
         String sql = "select * from student";
         return CRUDTemplate.executeQuery(sql, new BeanListHandler<>(Student.class));
     }
 
     @Override
-    public List<Student> getStudents(String keyWord) {
+    public List<Student> listStudents(String keyWord) {
         String sql = "select * from student where id like '%" + keyWord + "%'";
         return CRUDTemplate.executeQuery(sql, new BeanListHandler<>(Student.class));
     }
 
     @Override
-    public List<Student> getStudents(int start, int end) {
+    public List<Student> listStudents(int start, int end) {
         String sql = "SELECT * FROM(SELECT ROWNUM NO,stu.* FROM (SELECT * FROM student ORDER BY id ASC) stu WHERE ROWNUM<=?) WHERE NO >=?";
         return CRUDTemplate.executeQuery(sql, new BeanListHandler<>(Student.class), end, start);
     }
 
     @Override
-    public List<Student> getStudents(String keyWord, Integer pageStart, Integer pageEnd) {
+    public List<Student> listStudents(String keyWord, Integer pageStart, Integer pageEnd) {
         String sql = "SELECT * FROM(SELECT ROWNUM NO,stu.* FROM (SELECT * FROM student where id like '%" + keyWord + "%' ORDER BY id ASC) stu WHERE ROWNUM<=?) WHERE NO >=?";
         return CRUDTemplate.executeQuery(sql, new BeanListHandler<>(Student.class), pageEnd, pageStart);
     }
@@ -43,6 +43,12 @@ public class StudentDaoImpl implements IStudentDao {
     public List<Grade> getSCGrade(String teachingTaskNum) {
         String sql = "select selectCourse.*,Student.name,Student.department,Student.sClass,selectCourse.grade from selectCourse inner join Student on selectCourse.stuId = Student.id where teachingTaskNum = ?";
         return CRUDTemplate.executeQuery(sql, new BeanListHandler<>(Grade.class), teachingTaskNum);
+    }
+
+    @Override
+    public int updateSCGrade(Grade grade) {
+        String sql = "update selectCourse set grade = ? where stuId = ? and teachingTaskNum = ?";
+        return CRUDTemplate.executeUpdate(sql, grade.getGrade(), grade.getStuId(), grade.getTeachingTaskNum());
     }
 
     @Override
@@ -60,9 +66,14 @@ public class StudentDaoImpl implements IStudentDao {
 
     @Override
     public int updateStudent(Student stu) {
-        String sql = "update student set name = ?,sex = ?,age = ?,department = ?,sclass = ?,password = ?,phone = ?) where id = ?";
-        return CRUDTemplate.executeUpdate(sql, stu.getName(), stu.getSex(),
-                stu.getAge(), stu.getDepartment(), stu.getSclass(), stu.getPassword(), stu.getPhone(), stu.getId());
+        String sql = "update student set age = ? , phone = ? where id = ?";
+        return CRUDTemplate.executeUpdate(sql, stu.getAge(), stu.getPhone(), stu.getId());
+    }
+
+    @Override
+    public int updateStuPassword(String stuId, String oldPassword, String newPassword) {
+        String sql = "update student set password = ? where id = ? and password = ?";
+        return CRUDTemplate.executeUpdate(sql,newPassword,stuId,oldPassword);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.teaching.domain;
 
+import com.alibaba.fastjson.JSONObject;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -79,25 +81,49 @@ public class ResponseModel<M> implements Serializable {
     }
 
     /**
-     * 失败
+     * 获取实体失败
      *
      * @param <M>
      * @return
      */
-    public static <M> ResponseModel<M> buildError() {
+    public static <M> ResponseModel<M> buildModelError() {
         return new ResponseModel<>(ERROR, "获取失败", 0, null);
     }
 
     /**
-     * 获取所有的数据
+     * 获取实体成功
      *
      * @param count
      * @param data
      * @param <M>
      * @return
      */
-    public static <M> ResponseModel<M> buildSuccess(Integer count, List<M> data) {
+    public static <M> ResponseModel<M> buildModelSuccess(Integer count, List<M> data) {
         return new ResponseModel<M>(SUCCESS, "ok", count, data);
+    }
+
+    /**
+     * 创建消息
+     * @param type 成功或失败
+     * @param msg 反馈消息
+     * @return
+     */
+    public static String buildMessage(boolean type, String msg){
+        JSONObject object = new JSONObject();
+        object.put("type",type);
+        object.put("msg",msg);
+        return object.toJSONString();
+    }
+
+    /**
+     * 参数异常错误
+     * @return
+     */
+    public static String buildErrorParameter(){
+        JSONObject object = new JSONObject();
+        object.put("type",false);
+        object.put("msg","参数异常");
+        return object.toJSONString();
     }
 
     @Override

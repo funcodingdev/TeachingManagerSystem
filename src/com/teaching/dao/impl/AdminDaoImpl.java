@@ -14,7 +14,7 @@ import java.util.List;
 public class AdminDaoImpl implements IAdminDao {
 
     @Override
-    public List<Admin> getAllAdmin() {
+    public List<Admin> listAllAdmins() {
         return null;
     }
 

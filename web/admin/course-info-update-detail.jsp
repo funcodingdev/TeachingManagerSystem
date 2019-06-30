@@ -17,14 +17,16 @@
             <div class="layui-inline">
                 <label class="layui-form-label">课程编号</label>
                 <div class="layui-input-block">
-                    <input type="text" id="id" name="id" lay-verify="required|number" placeholder="请输入课程编号" autocomplete="off" readonly
+                    <input type="text" id="id" name="id" lay-verify="required|number" placeholder="请输入课程编号"
+                           autocomplete="off" readonly
                            class="layui-input layui-disabled">
                 </div>
             </div>
             <div class="layui-inline">
                 <label class="layui-form-label">课程名</label>
                 <div class="layui-input-block">
-                    <input type="text" id="name" name="name" lay-verify="required" placeholder="请输入课程名" autocomplete="off" readonly
+                    <input type="text" id="name" name="name" lay-verify="required" placeholder="请输入课程名"
+                           autocomplete="off" readonly
                            class="layui-input layui-disabled">
                 </div>
             </div>
@@ -33,14 +35,16 @@
             <div class="layui-inline">
                 <label class="layui-form-label">学分</label>
                 <div class="layui-input-block">
-                    <input type="text" id="credit" name="credit" lay-verify="required|number" placeholder="请输入学分" autocomplete="off"
+                    <input type="text" id="credit" name="credit" lay-verify="required|number" placeholder="请输入学分"
+                           autocomplete="off"
                            class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
                 <label class="layui-form-label">学时</label>
                 <div class="layui-input-block">
-                    <input type="text" id="period" name="period" lay-verify="required|number" placeholder="请输入学时" autocomplete="off"
+                    <input type="text" id="period" name="period" lay-verify="required|number" placeholder="请输入学时"
+                           autocomplete="off"
                            class="layui-input">
                 </div>
             </div>
@@ -65,24 +69,24 @@
             //注意：parent 是 JS 自带的全局对象，可用于操作父页面
             var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
             $.ajax({
-                url:'<%=request.getContextPath()%>/CourseServlet?action=updateCourse',
-                type:'POST',
-                data:{
-                    id:message.field.id
-                    ,name:message.field.name
-                    ,credit:message.field.credit
-                    ,period:message.field.period
+                url: '<%=request.getContextPath()%>/CourseServlet?action=updateCourse',
+                type: 'POST',
+                data: {
+                    id: message.field.id
+                    , name: message.field.name
+                    , credit: message.field.credit
+                    , period: message.field.period
                 },
-                dataType:'json',
+                dataType: 'json',
                 async: false,
-                success:function (msg) {
-                    if(msg == "true"){
-                        layer.msg("修改成功", {icon: 6});
-                        setTimeout(function(){
+                success: function (result) {
+                    if (result.type == true) {
+                        layer.msg(result.msg, {icon: 6});
+                        setTimeout(function () {
                             parent.layer.close(index);//关闭所有的弹出层
                         }, 1000);
-                    }else{
-                        layer.msg("修改失败", {icon: 5});
+                    } else {
+                        layer.msg(result.msg, {icon: 5});
                     }
                 }
             });
@@ -91,12 +95,12 @@
 
         $(function () {
             //从父层获取值，json是父层的全局js变量。eval是将该string类型的json串变为标准的json串
-            var parent_json = eval('('+parent.json+')');
+            var parent_json = eval('(' + parent.json + ')');
             form.val("myForm", {
                 "id": parent_json.id,
-                "name":parent_json.name,
-                "credit":parent_json.credit,
-                "period":parent_json.period
+                "name": parent_json.name,
+                "credit": parent_json.credit,
+                "period": parent_json.period
             })
         });
 

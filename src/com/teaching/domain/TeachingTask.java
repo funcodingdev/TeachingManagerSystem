@@ -1,6 +1,11 @@
 package com.teaching.domain;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.teaching.util.DateUtil;
+
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * 教学任务实体类
@@ -15,15 +20,17 @@ public class TeachingTask implements Serializable {
     private String teacherName;//教师姓名
     private Number totalNum;//选课总人数
     private String location;//上课地点
+    private Timestamp startTime;//开课时间
 
     public TeachingTask() {
     }
 
-    public TeachingTask(String teachingTaskNum, String courseName, String teacherId, String location) {
+    public TeachingTask(String teachingTaskNum, String courseName, String teacherId, String location,Timestamp startTime) {
         this.teachingTaskNum = teachingTaskNum;
         this.courseName = courseName;
         this.teacherId = teacherId;
         this.location = location;
+        this.startTime = startTime;
     }
 
     public String getTeachingTaskNum() {
@@ -82,6 +89,14 @@ public class TeachingTask implements Serializable {
         this.location = location;
     }
 
+    public Timestamp getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Timestamp startTime) {
+        this.startTime = startTime;
+    }
+
     @Override
     public String toString() {
         return "{" +
@@ -92,6 +107,7 @@ public class TeachingTask implements Serializable {
                 ", teacherName='" + teacherName + '\'' +
                 ", totalNum=" + totalNum +
                 ", location='" + location + '\'' +
+                ", startTime=" + startTime +
                 '}';
     }
 }

@@ -7,5 +7,5 @@ import com.teaching.domain.Department;
  * @Date: 2019/6/25
  */
 public interface IDeptDao {
-    Department getDeptName(String id);
+    Department getDepartment(String id);
 }

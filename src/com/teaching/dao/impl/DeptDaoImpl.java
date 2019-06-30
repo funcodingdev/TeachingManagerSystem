@@ -11,7 +11,7 @@ import com.teaching.jdbc.util.CRUDTemplate;
  */
 public class DeptDaoImpl implements IDeptDao {
     @Override
-    public Department getDeptName(String id) {
+    public Department getDepartment(String id) {
         String sql = "select * from department where id = ?";
         return CRUDTemplate.executeQuery(sql,new BeanHandler<>(Department.class),id);
     }

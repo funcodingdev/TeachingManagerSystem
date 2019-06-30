@@ -76,14 +76,14 @@
                 },
                 dataType:'json',
                 async: false,
-                success:function (msg) {
-                    if(msg == "true"){
-                        layer.msg("添加成功", {icon: 6});
+                success:function (result) {
+                    if(result.type == true){
+                        layer.msg(result.msg, {icon: 6});
                         setTimeout(function(){
                             parent.layer.close(index);//关闭所有的弹出层
                         }, 1000);
                     }else{
-                        layer.msg("添加失败", {icon: 5});
+                        layer.msg(result.msg, {icon: 5});
                     }
                 }
             });

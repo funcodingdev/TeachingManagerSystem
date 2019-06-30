@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class SClassDaoImpl implements ISClassDao {
     @Override
-    public List<SClass> getAllClass(String deptId) {
+    public List<SClass> listAllSClass(String deptId) {
         String sql = "select sclass.* from department inner join sclass on department.name = sclass.dept where id = ?";
         return CRUDTemplate.executeQuery(sql,new BeanListHandler<>(SClass.class),deptId);
     }

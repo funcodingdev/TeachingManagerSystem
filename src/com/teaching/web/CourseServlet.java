@@ -38,7 +38,7 @@ public class CourseServlet extends BaseServlet {
         String keyWord = request.getParameter("keyWord");
         ResponseModel<Course> stuModel = null;
         if (keyWord == null || keyWord.isEmpty()) {
-            stuModel = courseService.getAllCourse();
+            stuModel = courseService.getAllCourses();
         } else {
             stuModel = courseService.getCourses(keyWord);
         }
@@ -48,6 +48,7 @@ public class CourseServlet extends BaseServlet {
 
     /**
      * 获取所有课程名称
+     *
      * @param request
      * @param response
      * @return
@@ -56,7 +57,7 @@ public class CourseServlet extends BaseServlet {
      */
     public String getAllCourseName(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         courseService = ServiceFactory.getCourseService();
-        ResponseModel<Course> allCourse = courseService.getAllCourse();
+        ResponseModel<Course> allCourse = courseService.getAllCourses();
         List<Course> courses = allCourse.getData();
         JSONArray array = new JSONArray();
         for (Course course : courses) {
@@ -79,7 +80,7 @@ public class CourseServlet extends BaseServlet {
         String page = request.getParameter("page");
         String limit = request.getParameter("limit");
         if (page == null || limit == null) {
-            return ResponseModel.buildError().toString();
+            return ResponseModel.buildModelError().toString();
         }
         String keyWord = request.getParameter("keyWord");
         ResponseModel<Course> stuModel = null;
@@ -109,11 +110,10 @@ public class CourseServlet extends BaseServlet {
         }
         courseService = ServiceFactory.getCourseService();
         if (courseService.deleteCourse(id)) {
-            JSONArray array = new JSONArray();
-            array.add(true);
-            return array.toJSONString();
+            return ResponseModel.buildMessage(true, "删除成功");
+        } else {
+            return ResponseModel.buildMessage(false, "删除失败");
         }
-        return null;
     }
 
     /**
@@ -131,15 +131,18 @@ public class CourseServlet extends BaseServlet {
         String name = request.getParameter("name");
         String credit = request.getParameter("credit");
         String period = request.getParameter("period");
-        Course course = new Course(id,name,Integer.valueOf(credit),Integer.valueOf(period));
+        Course course = new Course(id, name, Integer.valueOf(credit), Integer.valueOf(period));
         courseService = ServiceFactory.getCourseService();
-        JSONArray array = new JSONArray();
-        array.add(courseService.insertCourse(course));
-        return array.toJSONString();
+        if (courseService.insertCourse(course)) {
+            return ResponseModel.buildMessage(true, "插入成功");
+        } else {
+            return ResponseModel.buildMessage(false, "插入失败");
+        }
     }
 
     /**
      * 修改课程
+     *
      * @param request
      * @param response
      * @return
@@ -152,15 +155,18 @@ public class CourseServlet extends BaseServlet {
         String name = request.getParameter("name");
         String credit = request.getParameter("credit");
         String period = request.getParameter("period");
-        Course course = new Course(id,name,Integer.valueOf(credit),Integer.valueOf(period));
+        Course course = new Course(id, name, Integer.valueOf(credit), Integer.valueOf(period));
         courseService = ServiceFactory.getCourseService();
-        JSONArray array = new JSONArray();
-        array.add(courseService.updateCourse(course));
-        return array.toJSONString();
+        if (courseService.updateCourse(course)) {
+            return ResponseModel.buildMessage(true, "更新成功");
+        } else {
+            return ResponseModel.buildMessage(false, "更新失败");
+        }
     }
 
     /**
      * 获取当前教师的课程
+     *
      * @param request
      * @param response
      * @return
@@ -171,7 +177,7 @@ public class CourseServlet extends BaseServlet {
         String page = request.getParameter("page");
         String limit = request.getParameter("limit");
         if (page == null || limit == null) {
-            return ResponseModel.buildError().toString();
+            return ResponseModel.buildModelError().toString();
         }
         String keyWord = request.getParameter("keyWord");
         ResponseModel<Course> stuModel = null;
@@ -180,12 +186,12 @@ public class CourseServlet extends BaseServlet {
             keyWord = "";
         }
         HttpSession session = request.getSession();
-        if(session == null){
-            response.sendRedirect(request.getContextPath()+"/login.jsp");
+        if (session == null) {
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
             return null;
         }
         Teacher teacher = (Teacher) session.getAttribute("obj");
-        stuModel = courseService.getTeaCourses(teacher.getId(), keyWord, Integer.valueOf(page), Integer.valueOf(limit));
+        stuModel = courseService.getCoursesToTea(teacher.getId(), keyWord, Integer.valueOf(page), Integer.valueOf(limit));
         JSONObject object = (JSONObject) JSON.toJSON(stuModel);
         return object.toJSONString();
     }

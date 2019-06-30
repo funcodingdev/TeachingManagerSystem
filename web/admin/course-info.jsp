@@ -72,8 +72,7 @@
             , curr: 1 //设定初始在第 1 页
             // , toolbar: 'default' //开启工具栏，此处显示默认图标
             , cols: [[ //表头
-                {type: 'checkbox', fixed: 'left'}
-                , {field: 'id', title: '课程编号', sort: true, fixed: 'left'}
+                {field: 'id', title: '课程编号', sort: true, fixed: 'left'}
                 , {field: 'name', title: '课程名'}
                 , {field: 'credit', title: '学分', sort: true}
                 , {field: 'period', title: '学时', sort: true}
@@ -85,7 +84,7 @@
             var data = obj.data //获得当前行数据
                 , layEvent = obj.event; //获得 lay-event 对应的值
             if (layEvent === 'del') {
-                layer.confirm('真的删除行么', function (index) {
+                layer.confirm('真的要删除此课程么', function (index) {
                     //向服务端发送删除指令
                     $.ajax({
                         type: 'get',
@@ -95,11 +94,12 @@
                         },
                         contentType: 'application/json',
                         success: function (result) {
-                            layer.msg('删除成功', {icon: 1}, {time: 2000});
-                            flushTab();
-                        },
-                        error: function (result) {
-                            layer.msg('删除失败', {icon: 2}, {time: 2000});
+                            if(result.type == true){
+                                layer.msg(result.msg, {icon: 1}, {time: 2000});
+                                flushTab();
+                            }else{
+                                layer.msg(result.msg, {icon: 2}, {time: 2000});
+                            }
                         }
                     });
                 });

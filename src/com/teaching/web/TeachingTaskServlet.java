@@ -12,11 +12,14 @@ import com.teaching.service.ServiceFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @Author: fangju
@@ -40,22 +43,22 @@ public class TeachingTaskServlet extends BaseServlet {
         String page = request.getParameter("page");
         String limit = request.getParameter("limit");
         if (page == null || limit == null) {
-            return ResponseModel.buildError().toString();
+            return ResponseModel.buildErrorParameter();
         }
         String keyWord = request.getParameter("keyWord");
         ResponseModel<TeachingTask> ttModel = null;
         teachingTaskService = ServiceFactory.getTeachingTaskService();
         if (keyWord == null || keyWord.isEmpty()) {
-            ttModel = teachingTaskService.getTeachingTasks(Integer.valueOf(page), Integer.valueOf(limit));
-        } else {
-            ttModel = teachingTaskService.getTeachingTasks(keyWord, Integer.valueOf(page), Integer.valueOf(limit));
+            keyWord = "";
         }
+        ttModel = teachingTaskService.getTeachingTasks(keyWord, Integer.valueOf(page), Integer.valueOf(limit));
         JSONObject object = (JSONObject) JSON.toJSON(ttModel);
         return object.toJSONString();
     }
 
     /**
      * 获取当前教师的教学计划
+     *
      * @param request
      * @param response
      * @return
@@ -66,7 +69,7 @@ public class TeachingTaskServlet extends BaseServlet {
         String page = request.getParameter("page");
         String limit = request.getParameter("limit");
         if (page == null || limit == null) {
-            return ResponseModel.buildError().toString();
+            return ResponseModel.buildErrorParameter();
         }
         String keyWord = request.getParameter("keyWord");
         ResponseModel<TeachingTask> ttModel = null;
@@ -76,13 +79,14 @@ public class TeachingTaskServlet extends BaseServlet {
         }
         HttpSession session = request.getSession();
         Teacher teacher = (Teacher) session.getAttribute("obj");
-        ttModel = teachingTaskService.getTeaTeachingTasks(teacher.getId(),keyWord, Integer.valueOf(page), Integer.valueOf(limit));
+        ttModel = teachingTaskService.getTeaTeachingTasks(teacher.getId(), keyWord, Integer.valueOf(page), Integer.valueOf(limit));
         JSONObject object = (JSONObject) JSON.toJSON(ttModel);
         return object.toJSONString();
     }
 
     /**
      * 删除教学计划
+     *
      * @param request
      * @param response
      * @return
@@ -92,19 +96,19 @@ public class TeachingTaskServlet extends BaseServlet {
     public String deleteTeachingTask(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String teachingTaskNum = request.getParameter("teachingTaskNum");
         if (teachingTaskNum == null || teachingTaskNum.isEmpty()) {
-            return null;
+            return ResponseModel.buildErrorParameter();
         }
         teachingTaskService = ServiceFactory.getTeachingTaskService();
         if (teachingTaskService.deleteTeachingTask(teachingTaskNum)) {
-            JSONArray array = new JSONArray();
-            array.add(true);
-            return array.toJSONString();
+            return ResponseModel.buildMessage(true, "删除成功");
+        } else {
+            return ResponseModel.buildMessage(false, "删除失败");
         }
-        return null;
     }
 
     /**
      * 除了此学生的教学计划数据
+     *
      * @param request
      * @param response
      * @return
@@ -115,7 +119,7 @@ public class TeachingTaskServlet extends BaseServlet {
         String page = request.getParameter("page");
         String limit = request.getParameter("limit");
         if (page == null || limit == null) {
-            return ResponseModel.buildError().toString();
+            return ResponseModel.buildErrorParameter();
         }
         String keyWord = request.getParameter("keyWord");
         ResponseModel<TeachingTask> ttModel = null;
@@ -125,13 +129,14 @@ public class TeachingTaskServlet extends BaseServlet {
         if (keyWord == null || keyWord.isEmpty()) {
             keyWord = "";
         }
-        ttModel = teachingTaskService.getAllTeachingTaskExceptThis(stu.getId(),keyWord, Integer.valueOf(page), Integer.valueOf(limit));
+        ttModel = teachingTaskService.getAllTeachingTaskExceptThis(stu.getId(), keyWord, Integer.valueOf(page), Integer.valueOf(limit));
         JSONObject object = (JSONObject) JSON.toJSON(ttModel);
         return object.toJSONString();
     }
 
     /**
      * 获取已选课程
+     *
      * @param request
      * @param response
      * @return
@@ -142,7 +147,7 @@ public class TeachingTaskServlet extends BaseServlet {
         String page = request.getParameter("page");
         String limit = request.getParameter("limit");
         if (page == null || limit == null) {
-            return ResponseModel.buildError().toString();
+            return ResponseModel.buildErrorParameter();
         }
         String keyWord = request.getParameter("keyWord");
         ResponseModel<TeachingTask> ttModel = null;
@@ -152,52 +157,62 @@ public class TeachingTaskServlet extends BaseServlet {
         if (keyWord == null || keyWord.isEmpty()) {
             keyWord = "";
         }
-        ttModel = teachingTaskService.getTeachingTaskSelf(stu.getId(),keyWord, Integer.valueOf(page), Integer.valueOf(limit));
+        ttModel = teachingTaskService.getTeachingTaskSelf(stu.getId(), keyWord, Integer.valueOf(page), Integer.valueOf(limit));
         JSONObject object = (JSONObject) JSON.toJSON(ttModel);
         return object.toJSONString();
     }
 
     /**
      * 插入教学计划
+     *
      * @param request
      * @param response
      * @return
      * @throws ServletException
      * @throws IOException
      */
-    public String insertTeachingTask(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public String insertTeachingTask(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ParseException {
         String teachingTaskNum = request.getParameter("teachingTaskNum");
         String courseName = request.getParameter("courseName");
         String teacherId = request.getParameter("teacherId");
         String location = request.getParameter("location");
-        TeachingTask teachingTask = new TeachingTask(teachingTaskNum,courseName,teacherId,location);
+        String startTime = request.getParameter("startTime");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = sdf.parse(startTime);
+        Timestamp timestamp = new Timestamp(date.getTime());
+        TeachingTask teachingTask = new TeachingTask(teachingTaskNum, courseName, teacherId, location, timestamp);
         teachingTaskService = ServiceFactory.getTeachingTaskService();
-        JSONArray array = new JSONArray();
-        array.add(teachingTaskService.insertTeachingTask(teachingTask));
-        return array.toJSONString();
+        if (teachingTaskService.insertTeachingTask(teachingTask)) {
+            return ResponseModel.buildMessage(true, "插入成功");
+        } else {
+            return ResponseModel.buildMessage(false, "插入失败");
+        }
     }
 
     /**
      * 更新教学任务
+     *
      * @param request
      * @param response
      * @return
      * @throws ServletException
      * @throws IOException
      */
-    public String updateTeachingTask(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public String updateTeachingTask(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ParseException {
         String teachingTaskNum = request.getParameter("teachingTaskNum");
         String courseName = request.getParameter("courseName");
         String teacherId = request.getParameter("teacherId");
         String location = request.getParameter("location");
-        TeachingTask teachingTask = new TeachingTask(teachingTaskNum,courseName,teacherId,location);
+        String startTime = request.getParameter("startTime");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = sdf.parse(startTime);
+        Timestamp timestamp = new Timestamp(date.getTime());
+        TeachingTask teachingTask = new TeachingTask(teachingTaskNum, courseName, teacherId, location, timestamp);
         teachingTaskService = ServiceFactory.getTeachingTaskService();
-        JSONArray array = new JSONArray();
-        array.add(teachingTaskService.updateTeachingTask(teachingTask));
-        return array.toJSONString();
+        if (teachingTaskService.updateTeachingTask(teachingTask)) {
+            return ResponseModel.buildMessage(true, "更新成功");
+        } else {
+            return ResponseModel.buildMessage(false, "更新失败");
+        }
     }
-
-
-
-
 }

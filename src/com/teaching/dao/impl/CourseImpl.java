@@ -15,31 +15,31 @@ import java.util.List;
 public class CourseImpl implements ICourseDao {
 
     @Override
-    public List<Course> getAllCourse() {
+    public List<Course> listAllCourses() {
         String sql = "select * from course";
         return CRUDTemplate.executeQuery(sql, new BeanListHandler<>(Course.class));
     }
 
     @Override
-    public List<Course> getCourses(String keyWord) {
+    public List<Course> listCourses(String keyWord) {
         String sql = "select * from course where id like '%" + keyWord + "%'";
         return CRUDTemplate.executeQuery(sql, new BeanListHandler<>(Course.class));
     }
 
     @Override
-    public List<Course> getCourses(int start, int end) {
+    public List<Course> listCourses(int start, int end) {
         String sql = "SELECT * FROM(SELECT ROWNUM NO,c.* FROM (SELECT * FROM course ORDER BY id ASC) c WHERE ROWNUM<=?) WHERE NO >=?";
         return CRUDTemplate.executeQuery(sql, new BeanListHandler<>(Course.class), end, start);
     }
 
     @Override
-    public List<Course> getCourses(String keyWord, Integer pageStart, Integer pageEnd) {
+    public List<Course> listCourses(String keyWord, Integer pageStart, Integer pageEnd) {
         String sql = "SELECT * FROM(SELECT ROWNUM NO,c.* FROM (SELECT * FROM course where id like '%" + keyWord + "%' ORDER BY id ASC) c WHERE ROWNUM<=?) WHERE NO >=?";
         return CRUDTemplate.executeQuery(sql, new BeanListHandler<>(Course.class), pageEnd, pageStart);
     }
 
     @Override
-    public List<Course> getTeaCourses(String teaId, String keyWord, Integer pageStart, Integer pageEnd) {
+    public List<Course> listCoursesToTea(String teaId, String keyWord, Integer pageStart, Integer pageEnd) {
         String sql = "select * from (SELECT * FROM(SELECT ROWNUM NO,tt.* FROM (select Course.* from TeachingTask inner join Teacher on TeachingTask.teacherId = Teacher.id inner join Course on TeachingTask.courseName = Course.name where Teacher.id = ? and courseName like '%" + keyWord + "%' ORDER BY teachingTaskNum ASC) tt WHERE ROWNUM<=?) WHERE NO >=?)";
         return CRUDTemplate.executeQuery(sql, new BeanListHandler<>(Course.class), teaId, pageEnd, pageStart);
     }

@@ -11,13 +11,13 @@ import java.util.List;
  * @Date: 2019/6/25
  */
 public interface ITeacherDao {
-    List<Teacher> getAllTeacher();//获取所有教师
+    List<Teacher> listAllTeachers();//获取所有教师
 
-    List<Teacher> getTeachers(String keyWord);//获取模糊查询的教师
+    List<Teacher> listTeachers(String keyWord);//获取模糊查询的教师
 
-    List<Teacher> getTeachers(int start, int end);//获取当前范围的教师
+    List<Teacher> listTeachers(int start, int end);//获取当前范围的教师
 
-    List<Teacher> getTeachers(String keyWord, Integer pageStart, Integer pageEnd);//获取模糊查询当前范围的教师
+    List<Teacher> listTeachers(String keyWord, Integer pageStart, Integer pageEnd);//获取模糊查询当前范围的教师
 
     int deleteTeacher(String id);//删除教师
 

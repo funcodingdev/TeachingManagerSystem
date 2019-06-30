@@ -57,23 +57,23 @@ create table Admin(
 
 -- 选课表
 create table SelectCourse(
-	stuId varchar2(50) not null,-- 学号
-	teachingTaskNum varchar2(50) not null,-- 教学任务号
-	grade number(3,2) default 0 not null,-- 成绩
-	primary key (stuId,teachingTaskNum),
-	foreign key (teachingTaskNum) references TeachingTask (teachingTaskNum) on delete cascade,
-	foreign key (stuId) references Student (id) on delete cascade
+	 stuId varchar2(50) not null,-- 学号
+	 teachingTaskNum varchar2(50) not null,-- 教学任务号
+	 grade number(3,0) default 0,-- 成绩
+	 foreign key (teachingTaskNum) references TeachingTask (teachingTaskNum) on delete cascade,
+	 foreign key (stuId) references Student (id) on delete cascade
 );
 -- 教学任务表
-create table TeachingTask(
-	teachingTaskNum varchar2(50) not null,-- 教学任务号
-	courseName varchar2(50) not null,-- 课程名
-	teacherNum VARCHAR2(50) not null,-- 教师编号
-	totalNum number(4,0) default 0,-- 选课人数
-	location varchar2(50) not null,-- 上课地点
-	primary key (teachingTaskNum),
-	foreign key (courseName) references Course (name) on delete cascade,
-	foreign key (teacherId) references Teacher (id) on delete cascade
+create table TeachingTask1(
+		teachingTaskNum varchar2(50) not null,-- 教学任务号
+		courseName varchar2(50) not null,-- 课程名
+		teacherId VARCHAR2(50) not null,-- 教师编号
+		totalNum number(4,0) default 0,-- 选课人数
+		location varchar2(50) not null,-- 上课地点
+		startTime date default sysdate not null,-- 开课时间
+		primary key (teachingTaskNum),
+		foreign key (courseName) references Course (name) on delete cascade,
+		foreign key (teacherId) references Teacher (id) on delete cascade
 );
 
 -- 班级表

@@ -3,9 +3,7 @@ package com.teaching.web;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.teaching.domain.Department;
 import com.teaching.domain.ResponseModel;
-import com.teaching.domain.Teacher;
 import com.teaching.domain.Teacher;
 import com.teaching.service.ITeacherService;
 import com.teaching.service.ServiceFactory;
@@ -27,6 +25,7 @@ public class TeacherServlet extends BaseServlet {
 
     /**
      * 获取所有的教师
+     *
      * @param request
      * @param response
      * @return
@@ -53,7 +52,7 @@ public class TeacherServlet extends BaseServlet {
         String page = request.getParameter("page");
         String limit = request.getParameter("limit");
         if (page == null || limit == null) {
-            return ResponseModel.buildError().toString();
+            return ResponseModel.buildErrorParameter();
         }
         String keyWord = request.getParameter("keyWord");
         ResponseModel<Teacher> teaModel = null;
@@ -65,7 +64,7 @@ public class TeacherServlet extends BaseServlet {
         JSONObject object = (JSONObject) JSON.toJSON(teaModel);
         return object.toJSONString();
     }
-    
+
     /**
      * 删除教师
      *
@@ -78,15 +77,14 @@ public class TeacherServlet extends BaseServlet {
     public String deleteTeacher(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String id = request.getParameter("id");
         if (id == null || id.isEmpty()) {
-            return null;
+            return ResponseModel.buildErrorParameter();
         }
         teacherService = ServiceFactory.getTeacherService();
         if (teacherService.deleteTeacher(id)) {
-            JSONArray array = new JSONArray();
-            array.add(true);
-            return array.toJSONString();
+            return ResponseModel.buildMessage(true, "删除成功");
+        } else {
+            return ResponseModel.buildMessage(false, "删除失败");
         }
-        return null;
     }
 
     /**
@@ -105,15 +103,18 @@ public class TeacherServlet extends BaseServlet {
         String sex = request.getParameter("sex");
         String age = request.getParameter("age");
         String identity = request.getParameter("identity");
-        Teacher teacher = new Teacher(id,name,sex,Integer.valueOf(age),identity,id);
+        Teacher teacher = new Teacher(id, name, sex, Integer.valueOf(age), identity, id);
         teacherService = ServiceFactory.getTeacherService();
-        JSONArray array = new JSONArray();
-        array.add(teacherService.insertTeacher(teacher));
-        return array.toJSONString();
+        if (teacherService.insertTeacher(teacher)) {
+            return ResponseModel.buildMessage(true, "插入成功");
+        } else {
+            return ResponseModel.buildMessage(false, "插入失败");
+        }
     }
 
     /**
      * 修改教师信息
+     *
      * @param request
      * @param response
      * @return
@@ -128,11 +129,13 @@ public class TeacherServlet extends BaseServlet {
         String age = request.getParameter("age");
         String identity = request.getParameter("identity");
         String password = request.getParameter("password");
-        Teacher teacher = new Teacher(id,name,sex,Integer.valueOf(age),identity,password);
+        Teacher teacher = new Teacher(id, name, sex, Integer.valueOf(age), identity, password);
         teacherService = ServiceFactory.getTeacherService();
-        JSONArray array = new JSONArray();
-        array.add(teacherService.updateTeacher(teacher));
-        return array.toJSONString();
+        if (teacherService.updateTeacher(teacher)) {
+            return ResponseModel.buildMessage(true, "更新成功");
+        } else {
+            return ResponseModel.buildMessage(false, "更新失败");
+        }
     }
 
 }

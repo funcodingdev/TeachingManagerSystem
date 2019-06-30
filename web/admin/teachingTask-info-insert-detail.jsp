@@ -47,6 +47,13 @@
             </div>
         </div>
         <div class="layui-form-item">
+            <label class="layui-form-label">开课时间</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" id="startTime" name="startTime" lay-verify="required"
+                       placeholder="请选择开课时间">
+            </div>
+        </div>
+        <div class="layui-form-item">
             <div class="layui-input-block login-btn">
                 <button class="layui-btn  layui-btn-submit " lay-submit="" lay-filter="addForm">确定</button>
                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>
@@ -56,11 +63,12 @@
 </div>
 
 <script>
-    layui.use(['layer', 'jquery', 'element', 'form'], function () {
+    layui.use(['layer', 'jquery', 'element', 'form', 'laydate'], function () {
         var layer = layui.layer
             , $ = layui.jquery
             , element = layui.element
-            , form = layui.form;
+            , form = layui.form
+            , laydate = layui.laydate;
         var type = "";
         //监听提交
         form.on('submit(addForm)', function (message) {
@@ -74,26 +82,37 @@
                     , courseName: message.field.courseName
                     , teacherId: message.field.teacherId
                     , location: message.field.location
+                    , startTime: message.field.startTime
                 },
                 dataType: 'json',
                 async: false,
-                success: function (msg) {
-                    if (msg == "true") {
-                        layer.msg("添加成功", {icon: 6});
+                success: function (result) {
+                    if (result.type == true) {
+                        layer.msg(result.msg, {icon: 6});
                         setTimeout(function () {
                             parent.layer.close(index);//关闭所有的弹出层
                         }, 1000);
                     } else {
-                        layer.msg("添加失败", {icon: 5});
+                        layer.msg(result.msg, {icon: 5});
                     }
                 }
             });
             return false;
         });
+
+        laydate.render({
+            elem: '#startTime'
+            , format: 'yyyy-MM-dd'
+            , max: '2099-06-16'
+            , min: '1980-01-01'
+            , theme: 'molv'
+        });
+
         $(function () {
 
             form.val("myForm", {
-                "teachingTaskNum": Date.parse(new Date())
+                "teachingTaskNum": Date.parse(new Date()),
+                "location": Math.floor(Math.random() * (6000 - 1000)) + 1000
             });
 
             $.ajax({
@@ -116,7 +135,7 @@
                 }
             });
             $.ajax({
-                url: "<%=request.getContextPath()%>/TeacherServlet?action=getAllTeacher",//请求地址
+                url: "<%=request.getContextPath()%>/TeacherServlet?action=listAllTeachers",//请求地址
                 type: "POST",//请求方式
                 dataType: "json",//返回数据类型
                 contentType: "application/json",
@@ -136,41 +155,6 @@
             });
         })
     });
-
-    function curentTime() {
-        var now = new Date();
-
-        var year = now.getFullYear();       //年
-        var month = now.getMonth() + 1;     //月
-        var day = now.getDate();            //日
-
-        var hh = now.getHours();            //时
-        var mm = now.getMinutes();          //分
-        var ss = now.getSeconds();           //秒
-
-        var clock = year + "";
-
-        if (month < 10)
-            clock += "0";
-
-        clock += month + "";
-
-        if (day < 10)
-            clock += "0";
-
-        clock += day + "";
-
-        if (hh < 10)
-            clock += "0";
-
-        clock += hh + "";
-        if (mm < 10) clock += '0';
-        clock += mm + "";
-
-        if (ss < 10) clock += '0';
-        clock += ss;
-        return (clock);
-    }
 </script>
 </body>
 </html>

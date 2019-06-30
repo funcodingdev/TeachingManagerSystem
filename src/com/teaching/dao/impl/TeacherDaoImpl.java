@@ -15,25 +15,25 @@ import java.util.List;
  */
 public class TeacherDaoImpl implements ITeacherDao {
     @Override
-    public List<Teacher> getAllTeacher() {
+    public List<Teacher> listAllTeachers() {
         String sql = "select * from teacher";
         return CRUDTemplate.executeQuery(sql, new BeanListHandler<>(Teacher.class));
     }
 
     @Override
-    public List<Teacher> getTeachers(String keyWord) {
+    public List<Teacher> listTeachers(String keyWord) {
         String sql = "select * from teacher where id like '%" + keyWord + "%'";
         return CRUDTemplate.executeQuery(sql, new BeanListHandler<>(Teacher.class));
     }
 
     @Override
-    public List<Teacher> getTeachers(int start, int end) {
+    public List<Teacher> listTeachers(int start, int end) {
         String sql = "SELECT * FROM(SELECT ROWNUM NO,tea.* FROM (SELECT * FROM teacher ORDER BY id ASC) tea WHERE ROWNUM<=?) WHERE NO >=?";
         return CRUDTemplate.executeQuery(sql, new BeanListHandler<>(Teacher.class), end, start);
     }
 
     @Override
-    public List<Teacher> getTeachers(String keyWord, Integer pageStart, Integer pageEnd) {
+    public List<Teacher> listTeachers(String keyWord, Integer pageStart, Integer pageEnd) {
         String sql = "SELECT * FROM(SELECT ROWNUM NO,tea.* FROM (SELECT * FROM teacher where id like '%" + keyWord + "%' ORDER BY id ASC) tea WHERE ROWNUM<=?) WHERE NO >=?";
         return CRUDTemplate.executeQuery(sql, new BeanListHandler<>(Teacher.class), pageEnd, pageStart);
     }

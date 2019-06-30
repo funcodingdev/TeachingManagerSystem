@@ -55,7 +55,7 @@
             elem: '#stuTable'
             , id: 'myTable'
             , height: 'full-100'
-            , url: '<%=request.getContextPath()%>/StudentServlet?action=getStudents' //数据接口
+            , url: '<%=request.getContextPath()%>/StudentServlet?action=listStudents' //数据接口
             , cellMinWidth: 80 //全局定义常规单元格的最小宽度
             , title: '学生表'
             , page: { //
@@ -71,8 +71,7 @@
             , autoSort: false
             // , toolbar: 'default' //开启工具栏，此处显示默认图标
             , cols: [[ //表头
-                {type: 'checkbox', fixed: 'left'}
-                , {field: 'id', title: 'ID', sort: true, fixed: 'left'}
+                {field: 'id', title: 'ID', sort: true, fixed: 'left'}
                 , {field: 'name', title: '姓名'}
                 , {field: 'sex', title: '性别', sort: true}
                 , {field: 'age', title: '年龄', sort: true}
@@ -81,7 +80,7 @@
                 , {
                     field: 'phone',
                     title: '手机号'
-                }//<div><img style="height:100px;width:100px;" src="<%=request.getContextPath()%>/res/image/headPhoto/{{d.image}}"></div>
+                }
                 , {field: 'image', title: '头像', width: 150, align: 'center', templet: '#imgtmp'}
                 , {fixed: 'right', align: 'center', toolbar: '#stuBar'}
             ]]
@@ -91,7 +90,7 @@
             var data = obj.data //获得当前行数据
                 , layEvent = obj.event; //获得 lay-event 对应的值
             if (layEvent === 'del') {
-                layer.confirm('真的删除行么', function (index) {
+                layer.confirm('真的要删除此学生么', function (index) {
                     //向服务端发送删除指令
                     $.ajax({
                         type: 'get',
@@ -101,11 +100,12 @@
                         },
                         contentType: 'application/json',
                         success: function (result) {
-                            layer.msg('删除成功', {icon: 1}, {time: 2000});
-                            flushTab();
-                        },
-                        error: function (result) {
-                            layer.msg('删除失败', {icon: 2}, {time: 2000});
+                            if(result.type == true){
+                                layer.msg(result.msg, {icon: 1}, {time: 2000});
+                                flushTab();
+                            }else{
+                                layer.msg(result.msg, {icon: 2}, {time: 2000});
+                            }
                         }
                     });
                 });
@@ -133,7 +133,7 @@
             // 注意参数(myTable为表格id)
             var studentId = $("#id").val();
             table.reload('myTable', {
-                url: '<%=request.getContextPath()%>/StudentServlet?action=getStudents&keyWord=' + studentId
+                url: '<%=request.getContextPath()%>/StudentServlet?action=listStudents&keyWord=' + studentId
             });
         });
 
@@ -159,14 +159,14 @@
         function flushTab() {
             // $(".layui-laypage-btn")[0].click();
             table.reload('myTable', {
-                url: '<%=request.getContextPath()%>/StudentServlet?action=getStudents'
+                url: '<%=request.getContextPath()%>/StudentServlet?action=listStudents'
             });
         }
 
     });
 </script>
 <script type="text/html" id="imgtmp">
-    <img src="{{d.image}}"/>
+    <img src="<%=request.getContextPath()%>/res/image/headPhoto/{{d.image}}"/>
 </script>
 </body>
 </html>

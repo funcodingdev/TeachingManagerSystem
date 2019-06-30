@@ -20,16 +20,16 @@ public class StudentServiceImpl implements IStudentService {
     @Override
     public ResponseModel<Student> getAllStudent() {
         studentDao = DaoFactory.getStudentDao();
-        List<Student> allStudent = studentDao.getAllStudent();
-        ResponseModel<Student> model = ResponseModel.buildSuccess(allStudent.size(), allStudent);
+        List<Student> allStudent = studentDao.listAllStudents();
+        ResponseModel<Student> model = ResponseModel.buildModelSuccess(allStudent.size(), allStudent);
         return model;
     }
 
     @Override
     public ResponseModel<Student> getStudents(String keyWord) {
         studentDao = DaoFactory.getStudentDao();
-        List<Student> students = studentDao.getStudents(keyWord);
-        ResponseModel<Student> model = ResponseModel.buildSuccess(students.size(), students);
+        List<Student> students = studentDao.listStudents(keyWord);
+        ResponseModel<Student> model = ResponseModel.buildModelSuccess(students.size(), students);
         return model;
     }
 
@@ -38,7 +38,7 @@ public class StudentServiceImpl implements IStudentService {
         studentDao = DaoFactory.getStudentDao();
         int totalNum = studentDao.getStuCount();
         ResponseModel<Student> stuModel = new ResponseModel<>(totalNum, currentPage, perPageSize);
-        List<Student> students = studentDao.getStudents(stuModel.getPageStart(), stuModel.getPageEnd());
+        List<Student> students = studentDao.listStudents(stuModel.getPageStart(), stuModel.getPageEnd());
         stuModel.setData(students);
         return stuModel;
     }
@@ -48,7 +48,7 @@ public class StudentServiceImpl implements IStudentService {
         studentDao = DaoFactory.getStudentDao();
         int totalNum = studentDao.getStuCount(keyWord);
         ResponseModel<Student> stuModel = new ResponseModel<>(totalNum, currentPage, perPageSize);
-        List<Student> students = studentDao.getStudents(keyWord, stuModel.getPageStart(), stuModel.getPageEnd());
+        List<Student> students = studentDao.listStudents(keyWord, stuModel.getPageStart(), stuModel.getPageEnd());
         stuModel.setData(students);
         return stuModel;
     }
@@ -57,7 +57,17 @@ public class StudentServiceImpl implements IStudentService {
     public ResponseModel<Grade> getSCGrade(String teachingTaskNum) {
         studentDao = DaoFactory.getStudentDao();
         List<Grade> students = studentDao.getSCGrade(teachingTaskNum);
-        return ResponseModel.buildSuccess(students.size(),students);
+        return ResponseModel.buildModelSuccess(students.size(),students);
+    }
+
+    @Override
+    public boolean updateSCGrade(Grade grade) {
+        if(grade.getGrade().intValue() < 0 || grade.getGrade().intValue() > 100){
+            return false;
+        }
+        studentDao = DaoFactory.getStudentDao();
+        int result = studentDao.updateSCGrade(grade);
+        return result > 0;
     }
 
     @Override
@@ -78,6 +88,13 @@ public class StudentServiceImpl implements IStudentService {
     public boolean updateStudent(Student stu) {
         studentDao = DaoFactory.getStudentDao();
         int result = studentDao.updateStudent(stu);
+        return result > 0;
+    }
+
+    @Override
+    public boolean updateStuPassword(String stuId, String oldPassword, String newPassword) {
+        studentDao = DaoFactory.getStudentDao();
+        int result = studentDao.updateStuPassword(stuId, oldPassword, newPassword);
         return result > 0;
     }
 

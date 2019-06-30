@@ -17,6 +17,12 @@ public class Grade {
     public Grade() {
     }
 
+    public Grade(String stuId, String teachingTaskNum, Number grade) {
+        this.stuId = stuId;
+        this.teachingTaskNum = teachingTaskNum;
+        this.grade = grade;
+    }
+
     public String getStuId() {
         return stuId;
     }

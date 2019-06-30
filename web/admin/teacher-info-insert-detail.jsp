@@ -12,7 +12,7 @@
 <body>
 <!-- 查询条件 -->
 <div style="margin: 15px; border: 1px dotted #ccc; border-radius: 8px">
-    <form id="myForm" class="layui-form" action="" style="margin: 27px" lay-filer="myForm">
+    <form id="myForm" class="layui-form" action="" style="margin: 27px" lay-filter="myForm">
         <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">教师编号</label>
@@ -90,23 +90,22 @@
                 },
                 dataType: 'json',
                 async: false,
-                success: function (msg) {
-                    if (msg == "true") {
-                        layer.msg("添加成功", {icon: 6});
+                success: function (result) {
+                    if (result.type == true) {
+                        layer.msg(result.msg, {icon: 6});
                         setTimeout(function () {
                             parent.layer.close(index);//关闭所有的弹出层
                         }, 1000);
                     } else {
-                        layer.msg("添加失败", {icon: 5});
+                        layer.msg(result.msg, {icon: 5});
                     }
                 }
             });
             return false;
         });
-
         $(function () {
             form.val("myForm", {
-                "id": "123"
+                "id": Date.parse(new Date())
             });
         });
     });

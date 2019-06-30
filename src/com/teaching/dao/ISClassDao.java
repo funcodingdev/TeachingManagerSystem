@@ -9,5 +9,5 @@ import java.util.List;
  * @Date: 2019/6/24
  */
 public interface ISClassDao {
-    List<SClass> getAllClass(String deptId);
+    List<SClass> listAllSClass(String deptId);
 }

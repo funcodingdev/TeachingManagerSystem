@@ -18,16 +18,16 @@ public class TeacherServiceImpl implements ITeacherService {
     @Override
     public ResponseModel<Teacher> getAllTeacher() {
         teacherDao = DaoFactory.getTeacherDao();
-        List<Teacher> allTeacher = teacherDao.getAllTeacher();
-        ResponseModel<Teacher> teaModel = ResponseModel.buildSuccess(allTeacher.size(), allTeacher);
+        List<Teacher> allTeacher = teacherDao.listAllTeachers();
+        ResponseModel<Teacher> teaModel = ResponseModel.buildModelSuccess(allTeacher.size(), allTeacher);
         return teaModel;
     }
 
     @Override
     public ResponseModel<Teacher> getTeachers(String keyWord) {
         teacherDao = DaoFactory.getTeacherDao();
-        List<Teacher> allTeacher = teacherDao.getTeachers(keyWord);
-        ResponseModel<Teacher> teaModel = ResponseModel.buildSuccess(allTeacher.size(), allTeacher);
+        List<Teacher> allTeacher = teacherDao.listTeachers(keyWord);
+        ResponseModel<Teacher> teaModel = ResponseModel.buildModelSuccess(allTeacher.size(), allTeacher);
         return teaModel;
     }
 
@@ -36,7 +36,7 @@ public class TeacherServiceImpl implements ITeacherService {
         teacherDao = DaoFactory.getTeacherDao();
         int totalNum = teacherDao.getTeaCount();
         ResponseModel<Teacher> teaModel = new ResponseModel<>(totalNum, currentPage, perPageSize);
-        List<Teacher> students = teacherDao.getTeachers(teaModel.getPageStart(), teaModel.getPageEnd());
+        List<Teacher> students = teacherDao.listTeachers(teaModel.getPageStart(), teaModel.getPageEnd());
         teaModel.setData(students);
         return teaModel;
     }
@@ -46,7 +46,7 @@ public class TeacherServiceImpl implements ITeacherService {
         teacherDao = DaoFactory.getTeacherDao();
         int totalNum = teacherDao.getTeaCount(keyWord);
         ResponseModel<Teacher> teaModel = new ResponseModel<>(totalNum, currentPage, perPageSize);
-        List<Teacher> teachers = teacherDao.getTeachers(keyWord, teaModel.getPageStart(), teaModel.getPageEnd());
+        List<Teacher> teachers = teacherDao.listTeachers(keyWord, teaModel.getPageStart(), teaModel.getPageEnd());
         teaModel.setData(teachers);
         return teaModel;
     }

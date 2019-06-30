@@ -31,6 +31,12 @@ public class Student implements Serializable {
         this.password = password;
     }
 
+    public Student(String id, Number age, String phone) {
+        this.id = id;
+        this.age = age;
+        this.phone = phone;
+    }
+
     public String getId() {
         return id;
     }

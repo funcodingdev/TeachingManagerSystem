@@ -68,14 +68,14 @@
             , curr: 1 //设定初始在第 1 页
             // , toolbar: 'default' //开启工具栏，此处显示默认图标
             , cols: [[ //表头
-                {type: 'checkbox', fixed: 'left'}
-                , {field: 'teachingTaskNum', title: '教学任务号', sort: true, fixed: 'left'}
+                {field: 'teachingTaskNum', title: '教学任务号', sort: true, fixed: 'left'}
                 , {field: 'courseId', title: '课程编号', sort: true}
                 , {field: 'courseName', title: '课程名'}
                 , {field: 'teacherId', title: '教师编号', sort: true}
                 , {field: 'teacherName', title: '教师姓名'}
                 , {field: 'totalNum', title: '选课总人数', sort: true}
                 , {field: 'location', title: '上课地点'}
+                , {field: 'startTime', title: '开课时间',sort: true, templet: '<div>{{ layui.util.toDateString(d.startTime, "yyyy-MM-dd") }}</div>'}
                 , {fixed: 'right', align: 'center', toolbar: '#stuBar'}
             ]]
         });
@@ -90,15 +90,17 @@
                         type: 'get',
                         url: '<%=request.getContextPath()%>/SCourseServlet?action=selectCourse',
                         data: {
-                            teachingTaskNum: data.teachingTaskNum//传向后端的数据
+                            teachingTaskNum: data.teachingTaskNum,//传向后端的数据
+                            startTime:data.startTime
                         },
                         contentType: 'application/json',
                         success: function (result) {
-                            layer.msg('选课成功', {icon: 1}, {time: 2000});
-                            flushTab();
-                        },
-                        error: function (result) {
-                            layer.msg('选课失败', {icon: 2}, {time: 2000});
+                            if (result.type == true) {
+                                layer.msg(result.msg, {icon: 1}, {time: 2000});
+                                flushTab();
+                            } else {
+                                layer.msg(result.msg, {icon: 2}, {time: 2000});
+                            }
                         }
                     });
                 });

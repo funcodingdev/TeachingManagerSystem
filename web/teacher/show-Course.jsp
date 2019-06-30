@@ -51,7 +51,7 @@
             elem: '#courseTable'
             , id: 'myTable'
             , height: 'full-100'
-            , url: '<%=request.getContextPath()%>/TeachingTaskServlet?action=getTeaTeachingTasks' //数据接口
+            , url: '<%=request.getContextPath()%>/TeachingTaskServlet?action=listAllTeachingTasksToTea' //数据接口
             , cellMinWidth: 80 //全局定义常规单元格的最小宽度
             , title: '教学计划表'
             , page: { //
@@ -68,8 +68,7 @@
             , curr: 1 //设定初始在第 1 页
             // , toolbar: 'default' //开启工具栏，此处显示默认图标
             , cols: [[ //表头
-                {type: 'checkbox', fixed: 'left'}
-                , {field: 'teachingTaskNum', title: '教学任务号', sort: true, fixed: 'left'}
+                {field: 'teachingTaskNum', title: '教学任务号', sort: true, fixed: 'left'}
                 , {field: 'courseId', title: '课程编号', sort: true}
                 , {field: 'courseName', title: '课程名'}
                 // , {field: 'teacherId', title: '教师编号', sort: true}
@@ -107,7 +106,7 @@
             // 注意参数(myTable为表格id)
             var courseName = $("#name").val();
             table.reload('myTable', {
-                url: '<%=request.getContextPath()%>/TeachingTaskServlet?action=getTeaTeachingTasks&keyWord=' + courseName
+                url: '<%=request.getContextPath()%>/TeachingTaskServlet?action=listAllTeachingTasksToTea&keyWord=' + courseName
             });
         });
 
@@ -115,7 +114,7 @@
         function flushTab() {
             // $(".layui-laypage-btn")[0].click();
             table.reload('myTable', {
-                url: '<%=request.getContextPath()%>/TeachingTaskServlet?action=getTeaTeachingTasks'
+                url: '<%=request.getContextPath()%>/TeachingTaskServlet?action=listAllTeachingTasksToTea'
             });
         }
 

@@ -31,7 +31,10 @@
                     </a>
                     <dl class="layui-nav-child">
                         <dd>
-                            <a id="update">基本资料</a>
+                            <a id="update_selfInfo">基本资料</a>
+                        </dd>
+                        <dd>
+                            <a id="update_password">修改密码</a>
                         </dd>
                         <dd>
                             <a href="<%=request.getContextPath()%>/LoginServlet?action=exit">注销</a>
@@ -63,14 +66,31 @@
             , element = layui.element //元素操作
             , $ = layui.jquery;
 
-        $(document).on('click', '#update', function () {
+        $(document).on('click', '#update_selfInfo', function () {
             layer.open({
                 title: '修改学生信息',
                 type: 2,
                 skin: 'layui-layer-lan',
                 closeBtn: 2,
-                area: ["740px", "500px"], // 宽高
+                area: ["740px", "540px"], // 宽高
                 content: '../student/student-info-update-detail.jsp',
+                // end: function () {
+                //     flushTab();
+                // },
+                success: function (layero, index) {
+                    layer.msg(layero, index);
+                }
+            });
+        });
+
+        $(document).on('click', '#update_password', function () {
+            layer.open({
+                title: '修改学生密码',
+                type: 2,
+                skin: 'layui-layer-lan',
+                closeBtn: 2,
+                area: ["740px", "340px"], // 宽高
+                content: '../student/student-info-update-pwd.jsp',
                 // end: function () {
                 //     flushTab();
                 // },

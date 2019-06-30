@@ -1,13 +1,13 @@
 package com.teaching.web;
 
 import com.alibaba.fastjson.JSONArray;
+import com.teaching.domain.ResponseModel;
 import com.teaching.domain.SClass;
 import com.teaching.service.ISClassService;
 import com.teaching.service.ServiceFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -32,10 +32,10 @@ public class SClassServlet extends BaseServlet {
     public String getAllClass(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String department = request.getParameter("department");
         if(department == null){
-            return null;
+            return ResponseModel.buildErrorParameter();
         }
         classService = ServiceFactory.getSClassService();
-        List<SClass> allClass = classService.getAllClass(department);
+        List<SClass> allClass = classService.listAllSClass(department);
         JSONArray array = new JSONArray();
         for (SClass aClass : allClass) {
             array.add(aClass.getName());

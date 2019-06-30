@@ -81,20 +81,19 @@
             , title: '学生表'
             , page: { //
                 layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
-                ,curr: 1 //设定初始在第 1 页
-                ,groups: 1 //只显示 1 个连续页码
-                ,first: false //不显示首页
-                ,last: false //不显示尾页
+                , curr: 1 //设定初始在第 1 页
+                , groups: 1 //只显示 1 个连续页码
+                , first: false //不显示首页
+                , last: false //不显示尾页
             }
             , limit: 15
             , limits: [15, 30, 45, 60]
             , even: true
-            ,autoSort: false
+            , autoSort: false
             , curr: 1 //设定初始在第 1 页
             // , toolbar: 'default' //开启工具栏，此处显示默认图标
             , cols: [[ //表头
-                {type: 'checkbox', fixed: 'left'}
-                , {field: 'stuId', title: 'ID', sort: true, fixed: 'left'}
+                {field: 'stuId', title: 'ID', sort: true, fixed: 'left'}
                 , {field: 'name', title: '姓名'}
                 , {field: 'department', title: '学院'}
                 , {field: 'sclass', title: '班级'}
@@ -102,25 +101,46 @@
             ]]
         });
 
-        // //监听单元格编辑
-        // table.on('edit(stu)', function (obj) {
-        //     var value = obj.value //得到修改后的值
-        //         , data = obj.data //得到所在行所有键值
-        //         , field = obj.field; //得到字段
-        //     layer.msg('[ID: ' + data.id + '] ' + field + ' 字段更改为：' + value);
-        // });
-
-        //监听行单击事件（单击事件为：rowDouble）
-        table.on('rowDouble(myForm)', function(obj){
-            var data = obj.data;
-            console.log(JSON.stringify(data));
-            layer.alert(JSON.stringify(data), {
-                title: '当前行数据：'
-            });
-
-            //标注选中样式
-            obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
+        //监听单元格编辑
+        table.on('edit(stu)', function (obj) {
+            var value = obj.value; //得到修改后的值
+            var json = JSON.stringify(obj.data);
+            console.log(json);
+            $.ajax({
+                url: '<%=request.getContextPath()%>/StudentServlet?action=updateSCGrade',
+                type: 'POST',
+                data: {
+                    json: json,
+                    stuId: json.stuId,
+                    teachingTaskNum: json.teachingTaskNum
+                    , grade: json.grade
+                },
+                dataType: 'json',
+                async: false,
+                success: function (result) {
+                    if (result.type == true) {
+                        layer.msg(result.msg, {icon: 6});
+                        setTimeout(function () {
+                            parent.layer.close(index);//关闭所有的弹出层
+                        }, 1000);
+                    } else {
+                        layer.msg(result.msg, {icon: 5});
+                    }
+                }
+            })
         });
+
+        // //监听行单击事件（单击事件为：rowDouble）
+        // table.on('rowDouble(myForm)', function(obj){
+        //     var data = obj.data;
+        //     console.log(JSON.stringify(data));
+        //     layer.alert(JSON.stringify(data), {
+        //         title: '当前行数据：'
+        //     });
+        //
+        //     //标注选中样式
+        //     obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
+        // });
 
         // 刷新表格
         function flushTab() {

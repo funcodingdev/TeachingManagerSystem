@@ -1,12 +1,8 @@
 package com.teaching.web;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.teaching.domain.Department;
-import com.teaching.domain.Grade;
-import com.teaching.domain.ResponseModel;
-import com.teaching.domain.Student;
+import com.teaching.domain.*;
 import com.teaching.service.IStudentService;
 import com.teaching.service.ServiceFactory;
 
@@ -14,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
@@ -58,7 +55,7 @@ public class StudentServlet extends BaseServlet {
         String page = request.getParameter("page");
         String limit = request.getParameter("limit");
         if (page == null || limit == null) {
-            return ResponseModel.buildError().toString();
+            return ResponseModel.buildErrorParameter();
         }
         String keyWord = request.getParameter("keyWord");
         ResponseModel<Student> stuModel = null;
@@ -72,7 +69,8 @@ public class StudentServlet extends BaseServlet {
     }
 
     /**
-     * 获取选课学生
+     * 获取选课学生成绩
+     *
      * @param request
      * @param response
      * @return
@@ -87,6 +85,27 @@ public class StudentServlet extends BaseServlet {
     }
 
     /**
+     * 修改学生成绩
+     *
+     * @param request
+     * @param response
+     * @return
+     * @throws ServletException
+     * @throws IOException
+     */
+    public String updateSCGrade(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String json = request.getParameter("json");
+        JSONObject object = JSONObject.parseObject(json);
+        Grade gradeModel = new Grade(object.getString("stuId"), object.getString("teachingTaskNum"), object.getIntValue("grade"));
+        studentService = ServiceFactory.getStudentService();
+        if (studentService.updateSCGrade(gradeModel)) {
+            return ResponseModel.buildMessage(true, "更新成功");
+        } else {
+            return ResponseModel.buildMessage(false, "更新失败");
+        }
+    }
+
+    /**
      * 删除学生
      *
      * @param request
@@ -98,15 +117,14 @@ public class StudentServlet extends BaseServlet {
     public String deleteStudent(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String id = request.getParameter("id");
         if (id == null || id.isEmpty()) {
-            return null;
+            return ResponseModel.buildErrorParameter();
         }
         studentService = ServiceFactory.getStudentService();
         if (studentService.deleteStudent(id)) {
-            JSONArray array = new JSONArray();
-            array.add(true);
-            return array.toJSONString();
+            return ResponseModel.buildMessage(true, "删除成功");
+        } else {
+            return ResponseModel.buildMessage(false, "删除成功");
         }
-        return null;
     }
 
     /**
@@ -126,17 +144,71 @@ public class StudentServlet extends BaseServlet {
         String age = request.getParameter("age");
         String dept = request.getParameter("department");
         String sClass = request.getParameter("sClass");
-        Department department = ServiceFactory.getDeptService().getDeptName(dept);
+        Department department = ServiceFactory.getDeptService().getDepartment(dept);
         if (department == null) {
-            return "[false]";
+            return ResponseModel.buildErrorParameter();
         }
-        Student stu = new Student(id,name,sex,Integer.valueOf(age),dept,sClass,id);
+        Student stu = new Student(id, name, sex, Integer.valueOf(age), dept, sClass, id);
         //设置部门名
         stu.setDepartment(department.getName());
         studentService = ServiceFactory.getStudentService();
-        JSONArray array = new JSONArray();
-        array.add(studentService.insertStudent(stu));
-        return array.toJSONString();
+        if (studentService.insertStudent(stu)) {
+            return ResponseModel.buildMessage(true, "插入成功");
+        } else {
+            return ResponseModel.buildMessage(false, "插入失败");
+        }
     }
 
+    /**
+     * 更新学生基本信息
+     *
+     * @param request
+     * @param response
+     * @return
+     * @throws ServletException
+     * @throws IOException
+     */
+    public String updateStudent(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //获取表单学生信息
+        String id = request.getParameter("id");
+        String age = request.getParameter("age");
+        String phone = request.getParameter("phone");
+        Student stu = new Student(id, Integer.valueOf(age), phone);
+        studentService = ServiceFactory.getStudentService();
+        if (studentService.updateStudent(stu)) {
+            HttpSession session = request.getSession();
+            Student newStu = (Student) session.getAttribute("obj");
+            newStu.setAge(Integer.valueOf(age));
+            newStu.setPhone(phone);
+            session.setAttribute("obj", newStu);
+            return ResponseModel.buildMessage(true, "更新成功");
+        } else {
+            return ResponseModel.buildMessage(false, "更新失败");
+        }
+    }
+
+    /**
+     * 更新学生密码
+     *
+     * @param request
+     * @param response
+     * @return
+     * @throws ServletException
+     * @throws IOException
+     */
+    public String updateStuPassword(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String oldPassword = request.getParameter("oldPassword");
+        String newPassword = request.getParameter("newPassword");
+        if (oldPassword == null || newPassword == null) {
+            return ResponseModel.buildErrorParameter();
+        }
+        HttpSession session = request.getSession();
+        Student stu = (Student) session.getAttribute("obj");
+        studentService = ServiceFactory.getStudentService();
+        if (studentService.updateStuPassword(stu.getId(), oldPassword, newPassword)) {
+            return ResponseModel.buildMessage(true, "密码修改成功");
+        } else {
+            return ResponseModel.buildMessage(false, "密码修改失败");
+        }
+    }
 }

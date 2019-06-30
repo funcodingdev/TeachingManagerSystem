@@ -17,7 +17,7 @@ public class AdminServiceImpl implements IAdminService {
     private IAdminDao adminDao;
 
     @Override
-    public List<Admin> getAllAdmin() {
+    public List<Admin> getAllAdmins() {
         return null;
     }
 

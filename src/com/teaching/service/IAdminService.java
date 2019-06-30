@@ -9,7 +9,7 @@ import java.util.List;
  * @Date: 2019/5/25 15:40
  */
 public interface IAdminService {
-    List<Admin> getAllAdmin();//获取所有的管理员
+    List<Admin> getAllAdmins();//获取所有的管理员
 
     Admin getAdmin(String id);//获取某个管理员
 

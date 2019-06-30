@@ -12,9 +12,9 @@ import com.teaching.service.IDeptService;
 public class DeptServiceImpl implements IDeptService {
     private IDeptDao deptDao;
     @Override
-    public Department getDeptName(String id) {
+    public Department getDepartment(String id) {
         deptDao = DaoFactory.getDeptDao();
-        Department department = deptDao.getDeptName(id);
+        Department department = deptDao.getDepartment(id);
         return department;
     }
 }

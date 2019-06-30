@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: FJ
@@ -17,6 +18,12 @@
     <link rel="stylesheet" href="<%=request.getContextPath()%>/layui/css/layui.css"/>
     <link rel="stylesheet" href="<%=request.getContextPath()%>/res/css/login.css"/>
     <script type="text/javascript" src="<%=request.getContextPath()%>/layui/layui.js"></script>
+    <c:if test="${!(empty message)}">
+    <script type="text/javascript">
+        alert('<c:out value="${message}"/>');
+    </script>
+        <c:remove var="message" scope="session"/>
+    </c:if>
 <body>
 <div class="login-content">
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
@@ -63,9 +70,16 @@
             , $ = layui.jquery;
         //监听提交
         form.on('submit(loginForm)', function (data) {
+            // var username = data.field.username;
+            // console.log(username);
+            // if(username.length < 6){
+            //     layer.msg("密码长度不能小于6位", {icon: 5}, 2000);
+            //     return;
+            // }
             return true;
         });
     });
 </script>
+<script type="text/javascript" color="0,0,255" opacity='0.7' zIndex="-2" count="150" src="<%=request.getContextPath()%>/res/js/canvas-nest.js"></script>
 </body>
 </html>
