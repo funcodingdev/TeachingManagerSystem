@@ -33,5 +33,4 @@ public interface IStudentDao {
     Student findStudent(String id, String password);//查找一个学生
 
     int getStuCount(String... args);//获取所有学生数量
-
 }

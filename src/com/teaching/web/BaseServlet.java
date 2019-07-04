@@ -24,7 +24,7 @@ public class BaseServlet extends HttpServlet {
         if (action == null) {
             throw new RuntimeException("参数异常");
         }
-        System.out.println("action=" + action);
+//        System.out.println("action=" + action);
         Class clazz = this.getClass();
         Method method = null;
         PrintWriter writer = null;

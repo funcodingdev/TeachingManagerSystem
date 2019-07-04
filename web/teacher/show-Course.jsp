@@ -51,7 +51,7 @@
             elem: '#courseTable'
             , id: 'myTable'
             , height: 'full-100'
-            , url: '<%=request.getContextPath()%>/TeachingTaskServlet?action=listAllTeachingTasksToTea' //数据接口
+            , url: '<%=request.getContextPath()%>/TeachingTaskServlet?action=getTeaTeachingTasks' //数据接口
             , cellMinWidth: 80 //全局定义常规单元格的最小宽度
             , title: '教学计划表'
             , page: { //
@@ -106,7 +106,7 @@
             // 注意参数(myTable为表格id)
             var courseName = $("#name").val();
             table.reload('myTable', {
-                url: '<%=request.getContextPath()%>/TeachingTaskServlet?action=listAllTeachingTasksToTea&keyWord=' + courseName
+                url: '<%=request.getContextPath()%>/TeachingTaskServlet?action=getTeaTeachingTasks&keyWord=' + courseName
             });
         });
 
@@ -114,7 +114,7 @@
         function flushTab() {
             // $(".layui-laypage-btn")[0].click();
             table.reload('myTable', {
-                url: '<%=request.getContextPath()%>/TeachingTaskServlet?action=listAllTeachingTasksToTea'
+                url: '<%=request.getContextPath()%>/TeachingTaskServlet?action=getTeaTeachingTasks'
             });
         }
 

@@ -97,7 +97,7 @@
         });
         $(function () {
             $.ajax({
-                url: "<%=request.getContextPath()%>/TeacherServlet?action=listAllTeachers",//请求地址
+                url: "<%=request.getContextPath()%>/TeacherServlet?action=getAllTeacher",//请求地址
                 type: "POST",//请求方式
                 dataType: "json",//返回数据类型
                 contentType: "application/json",

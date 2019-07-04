@@ -55,7 +55,7 @@
             elem: '#teaTable'
             , id: 'myTable'
             , height: 'full-100'
-            , url: '<%=request.getContextPath()%>/TeacherServlet?action=listTeachers' //数据接口
+            , url: '<%=request.getContextPath()%>/TeacherServlet?action=getTeachers' //数据接口
             , cellMinWidth: 80 //全局定义常规单元格的最小宽度
             , title: '教师表'
             , page: { //
@@ -128,7 +128,7 @@
             // 注意参数(myTable为表格id)
             var teacherId = $("#id").val();
             table.reload('myTable', {
-                url: '<%=request.getContextPath()%>/TeacherServlet?action=listTeachers&keyWord=' + teacherId
+                url: '<%=request.getContextPath()%>/TeacherServlet?action=getTeachers&keyWord=' + teacherId
             });
         });
 
@@ -154,7 +154,7 @@
         function flushTab() {
             // $(".layui-laypage-btn")[0].click();
             table.reload('myTable', {
-                url: '<%=request.getContextPath()%>/TeacherServlet?action=listTeachers'
+                url: '<%=request.getContextPath()%>/TeacherServlet?action=getTeachers'
             });
         }
 

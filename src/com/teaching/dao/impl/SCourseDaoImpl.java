@@ -37,6 +37,13 @@ public class SCourseDaoImpl implements ISCourseDao {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            try {
+                if(conn != null){
+                    conn.rollback();
+                }
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
         } finally {
             try {
                 conn.setAutoCommit(true);
@@ -68,6 +75,13 @@ public class SCourseDaoImpl implements ISCourseDao {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            try {
+                if(conn != null){
+                    conn.rollback();
+                }
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
         } finally {
             try {
                 conn.setAutoCommit(true);
@@ -78,6 +92,5 @@ public class SCourseDaoImpl implements ISCourseDao {
         }
         return 0;
     }
-
 
 }

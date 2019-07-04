@@ -55,7 +55,7 @@
             elem: '#stuTable'
             , id: 'myTable'
             , height: 'full-100'
-            , url: '<%=request.getContextPath()%>/StudentServlet?action=listStudents' //数据接口
+            , url: '<%=request.getContextPath()%>/StudentServlet?action=getStudents' //数据接口
             , cellMinWidth: 80 //全局定义常规单元格的最小宽度
             , title: '学生表'
             , page: { //
@@ -81,7 +81,7 @@
                     field: 'phone',
                     title: '手机号'
                 }
-                , {field: 'image', title: '头像', width: 150, align: 'center', templet: '#imgtmp'}
+                // , {field: 'image', title: '头像', width: 150, align: 'center', templet: '#imgtmp'}
                 , {fixed: 'right', align: 'center', toolbar: '#stuBar'}
             ]]
         });
@@ -133,7 +133,7 @@
             // 注意参数(myTable为表格id)
             var studentId = $("#id").val();
             table.reload('myTable', {
-                url: '<%=request.getContextPath()%>/StudentServlet?action=listStudents&keyWord=' + studentId
+                url: '<%=request.getContextPath()%>/StudentServlet?action=getStudents&keyWord=' + studentId
             });
         });
 
@@ -159,14 +159,14 @@
         function flushTab() {
             // $(".layui-laypage-btn")[0].click();
             table.reload('myTable', {
-                url: '<%=request.getContextPath()%>/StudentServlet?action=listStudents'
+                url: '<%=request.getContextPath()%>/StudentServlet?action=getStudents'
             });
         }
 
     });
 </script>
-<script type="text/html" id="imgtmp">
+<%--<script type="text/html" id="imgtmp">
     <img src="<%=request.getContextPath()%>/res/image/headPhoto/{{d.image}}"/>
-</script>
+</script>--%>
 </body>
 </html>

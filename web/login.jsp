@@ -1,4 +1,3 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: FJ
@@ -7,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -18,12 +18,15 @@
     <link rel="stylesheet" href="<%=request.getContextPath()%>/layui/css/layui.css"/>
     <link rel="stylesheet" href="<%=request.getContextPath()%>/res/css/login.css"/>
     <script type="text/javascript" src="<%=request.getContextPath()%>/layui/layui.js"></script>
+
     <c:if test="${!(empty message)}">
     <script type="text/javascript">
         alert('<c:out value="${message}"/>');
     </script>
-        <c:remove var="message" scope="session"/>
+    <c:remove var="message" scope="session"/>
     </c:if>
+
+</head>
 <body>
 <div class="login-content">
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
@@ -62,24 +65,15 @@
         </div>
     </form>
 </div>
+
 <script>
-    layui.use(['form', 'element', 'layer'], function () {
-        var form = layui.form
-            , element = layui.element//元素操作
-            , layer = layui.layer
-            , $ = layui.jquery;
+    layui.use('form', function () {
+        var form = layui.form;
         //监听提交
         form.on('submit(loginForm)', function (data) {
-            // var username = data.field.username;
-            // console.log(username);
-            // if(username.length < 6){
-            //     layer.msg("密码长度不能小于6位", {icon: 5}, 2000);
-            //     return;
-            // }
             return true;
         });
     });
 </script>
-<script type="text/javascript" color="0,0,255" opacity='0.7' zIndex="-2" count="150" src="<%=request.getContextPath()%>/res/js/canvas-nest.js"></script>
 </body>
 </html>

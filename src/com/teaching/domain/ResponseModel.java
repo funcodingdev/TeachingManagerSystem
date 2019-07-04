@@ -15,11 +15,12 @@ public class ResponseModel<M> implements Serializable {
     public static final int SUCCESS = 0;
     public static final int ERROR = -1;
     private Integer code;//结果码
-    private String msg;//结果消息
+    private String msg;//结果码描述消息
     private Integer count;//总数据量
+    private List<M> data;//当前页数据量
+    //
     private Integer currentPage;//当前页
     private Integer perPageSize;//每页数量
-    private List<M> data;//当前页数据量
 
     private ResponseModel() {
         this.code = SUCCESS;

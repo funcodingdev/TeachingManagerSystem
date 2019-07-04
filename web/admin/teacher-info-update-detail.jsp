@@ -26,7 +26,7 @@
                 <label class="layui-form-label">姓名</label>
                 <div class="layui-input-block">
                     <input type="text" id="name" name="name" lay-verify="required" autocomplete="off"
-                           class="layui-input">
+                           class="layui-input layui-disabled" readonly>
                 </div>
             </div>
         </div>
@@ -44,7 +44,7 @@
                 <label class="layui-form-label">年龄</label>
                 <div class="layui-input-block">
                     <input type="number" id="age" name="age" lay-verify="required|number" autocomplete="off"
-                           class="layui-input">
+                           class="layui-input layui-disabled" readonly>
                 </div>
             </div>
         </div>
@@ -63,8 +63,8 @@
         <div class="layui-form-item">
             <label class="layui-form-label">密码</label>
             <div class="layui-input-block">
-                <input type="password" name="password" id="password" class="layui-input" placeholder="请输入密码"
-                       autocomplete="off"/>
+                <input type="password" name="password" id="password" class="layui-input layui-disabled" placeholder="请输入密码"
+                       autocomplete="off" readonly/>
             </div>
         </div>
         <div class="layui-form-item">

@@ -130,7 +130,7 @@
         form.on('select(department)', function (data) {
             var department = $('#department').val();
             $.ajax({
-                url: "<%=request.getContextPath()%>/SClassServlet?action=listAllSClass&department=" + department,//请求地址
+                url: "<%=request.getContextPath()%>/SClassServlet?action=getAllClass&department=" + department,//请求地址
                 type: "POST",//请求方式
                 dataType: "json",//返回数据类型
                 contentType: "application/json",
